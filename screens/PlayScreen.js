@@ -14,6 +14,8 @@ import Colors from "../constants/colors";
 import DrinksContext from "../context/drinks-context";
 import Config from "../components/Config";
 
+//Hello this is Rick, I hope you can see this comment in the Git
+
 //Random num generator
 const generateRandomNumber = (max) => {
   return Math.round(Math.random() * (max - 1) + 1);
