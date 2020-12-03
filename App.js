@@ -12,8 +12,6 @@ import StartScreen from "./screens/StartScreen";
 import Colors from "./constants/colors";
 import { init, fetchShots } from "./database/sqlite";
 
-//Hi this is Rick making an annoying comment in the main App.js file
-
 //Initialize SQLite database
 init()
   .then(() => {
