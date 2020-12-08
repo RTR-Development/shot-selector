@@ -13,7 +13,7 @@ import { Ionicons } from "@expo/vector-icons";
 import Colors from "../constants/colors";
 import DrinksContext from "../context/drinks-context";
 import Config from "../components/Config";
-import WheelOfFortune from "react-native-wheel-of-fortune";
+import { Wheel } from "../components/Wheel";
 
 //Random num generator
 const generateRandomNumber = (max) => {
@@ -46,6 +46,14 @@ const PlayScreen = (props) => {
   const [countColor, setCountColor] = useState("rgb(33,33,33)");
   const [alcColor, setAlcColor] = useState("rgb(33,33,33)");
   const [chanceColor, setChanceColor] = useState("rgb(33,33,33)");
+
+  let wheelRef = React.createRef();
+  const onShowWheelRef = () => {
+    wheelRef.show();
+  };
+  const onCloseWheelRef = () => {
+    wheelRef.close();
+  };
 
   // Set the count of all ocurrences summed up to 0 when screen is activated
   let countOcc = 0;
@@ -85,6 +93,9 @@ const PlayScreen = (props) => {
       setCountColor(transitionCountColor());
       setAlcColor(transitionAlcColor());
       setChanceColor(transitionChanceColor());
+      if (Math.random() < 0.5) {
+        wheelRef.show();
+      }
     }
   }, [count, drinkABV, drinkChance]);
 
@@ -216,6 +227,10 @@ const PlayScreen = (props) => {
                   <Image source={{ uri: selectedImage }} style={styles.image} />
                 )}
               </View>
+              <Wheel
+                ref={(target) => (wheelRef = target)}
+                data={[1, 2, 3, 4, 5]}
+              />
               <View
                 style={{
                   flex: 1,
