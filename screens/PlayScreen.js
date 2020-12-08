@@ -13,6 +13,7 @@ import { Ionicons } from "@expo/vector-icons";
 import Colors from "../constants/colors";
 import DrinksContext from "../context/drinks-context";
 import Config from "../components/Config";
+import WheelOfFortune from "react-native-wheel-of-fortune";
 
 //Random num generator
 const generateRandomNumber = (max) => {
