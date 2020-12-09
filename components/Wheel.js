@@ -39,6 +39,12 @@ class Wheel extends Component {
             getWinner={(value, index) =>
               this.setState({ winnerValue: value, winnerIndex: index })
             }
+            borderWidth={12}
+            borderColor={"#000000"}
+            knobSize={100}
+            duration={1000}
+            innerRadius={1}
+            colors={['#000000','#f1c232','#000000','#f1c232']}
           />
         </View>
       </Modal>
