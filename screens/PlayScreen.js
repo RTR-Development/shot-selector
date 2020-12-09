@@ -227,7 +227,11 @@ const PlayScreen = (props) => {
               </View>
               <Wheel
                 ref={(target) => (wheelRef = target)}
-                data={[1, 2, 3, 4]}
+                data={[
+                  '2x','Nothing',
+                  '2x','Nothing',
+                  '2x','Nothing'
+                ]}
               />
               <View
                 style={{

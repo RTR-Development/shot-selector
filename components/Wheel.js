@@ -22,6 +22,33 @@ class Wheel extends Component {
   close = () => {
     this.setState({ show: false });
   };
+
+  // _renderTopToPlay() {
+  //   if (this.state.started == false) {
+  //       if (this.props.playButton) {
+  //           return (
+  //               <TouchableOpacity onPress={() => this._onPress()}>
+  //                   {this.props.playButton()}
+  //               </TouchableOpacity>
+  //           );
+  //       } else {
+  //           return (
+  //               <View style={styles.modal}>
+  //                   <TouchableOpacity onPress={() => this._onPress()}>
+  //                       <RNText style={styles.startText}>{this.props.startText ? this.props.startText : "TAP2PLAY"}</RNText>
+  //                   </TouchableOpacity>
+  //               </View>
+  //           );
+  //       }
+  //   }
+  // }
+
+  // _renderPlayButton = () => {
+  //   return (
+  //     <Text style={styles.tapToStart}>TAP 2 PLAY</Text>
+  //   );
+  // }
+  
   render() {
     let { show } = this.state;
     const rewards = this.props.data;
@@ -42,9 +69,12 @@ class Wheel extends Component {
             borderWidth={12}
             borderColor={"#000000"}
             knobSize={100}
-            duration={1000}
+            duration={2000}
             innerRadius={1}
-            colors={['#000000','#f1c232','#000000','#f1c232']}
+            colors={['#000000','#f1c232']}
+            backgroundColor={"#f1c232"}
+            textColor={'#FFF'}
+            startText={'DoA'}
           />
         </View>
       </Modal>
@@ -54,4 +84,10 @@ class Wheel extends Component {
 
 export default Wheel;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  tapToStart: {
+    fontSize: 50,
+    color: '#fff',
+    fontWeight: 'bold'
+  }
+});
