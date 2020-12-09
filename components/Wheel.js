@@ -1,16 +1,19 @@
-import React from "react";
-import { StyleSheet, Text, Modal, TouchableOpacity } from "react-native";
+import React, { Component } from "react";
+import { StyleSheet, View, Modal, TouchableOpacity } from "react-native";
 
 import colors from "../constants/colors";
 import Config from "../components/Config";
 import WheelOfFortune from "react-native-wheel-of-fortune";
 
-export class Wheel extends React.Component {
+class Wheel extends Component {
   constructor(props) {
     super(props);
     this.state = {
       show: false,
+      winnerValue: null,
+      winnerIndex: null,
     };
+    this.child = null;
   }
   show = () => {
     this.setState({ show: true });
@@ -29,10 +32,20 @@ export class Wheel extends React.Component {
         animationType={"fade"}
         transparent={true}
       >
-        <WheelOfFortune rewards={rewards} />
+        <View style={{ flex: 1 }}>
+          <WheelOfFortune
+            onRef={(ref) => (this.child = ref)}
+            rewards={rewards}
+            getWinner={(value, index) =>
+              this.setState({ winnerValue: value, winnerIndex: index })
+            }
+          />
+        </View>
       </Modal>
     );
   }
 }
+
+export default Wheel;
 
 const styles = StyleSheet.create({});

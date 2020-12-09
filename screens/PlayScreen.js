@@ -13,7 +13,7 @@ import { Ionicons } from "@expo/vector-icons";
 import Colors from "../constants/colors";
 import DrinksContext from "../context/drinks-context";
 import Config from "../components/Config";
-import { Wheel } from "../components/Wheel";
+import Wheel from "../components/Wheel";
 
 //Random num generator
 const generateRandomNumber = (max) => {
@@ -93,9 +93,7 @@ const PlayScreen = (props) => {
       setCountColor(transitionCountColor());
       setAlcColor(transitionAlcColor());
       setChanceColor(transitionChanceColor());
-      if (Math.random() < 0.5) {
-        wheelRef.show();
-      }
+      wheelRef.show();
     }
   }, [count, drinkABV, drinkChance]);
 
@@ -229,7 +227,7 @@ const PlayScreen = (props) => {
               </View>
               <Wheel
                 ref={(target) => (wheelRef = target)}
-                data={[1, 2, 3, 4, 5]}
+                data={[1, 2, 3, 4, 5, 6]}
               />
               <View
                 style={{
