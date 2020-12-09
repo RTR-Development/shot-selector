@@ -36,6 +36,12 @@ const StartScreen = (props) => {
     );
   };
 
+  likeHandler = async () => {
+    Linking.openURL(
+      "http://play.google.com/store/apps/details?id=com.rtrdevelopment.shot_selector"
+    ).catch((err) => console.error("Couldn't load page", err));
+  };
+
   return (
     <View style={styles.mainContainer}>
       <View style={styles.imageContainer}>
@@ -73,10 +79,7 @@ const StartScreen = (props) => {
             color="white"
           />
         </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => props.onChangeScreen("InputScreen")}
-          style={styles.ionicon}
-        >
+        <TouchableOpacity onPress={() => likeHandler()} style={styles.ionicon}>
           <Ionicons
             name="md-thumbs-up"
             size={Config.deviceHeight > 600 ? 48 : 42}
