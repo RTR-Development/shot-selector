@@ -5,6 +5,19 @@ import colors from "../constants/colors";
 import Config from "../components/Config";
 import WheelOfFortune from "react-native-wheel-of-fortune";
 
+let rewards = [];
+const allRewards = ["2x", "1x", "New shot", "No shot", "Hand out"];
+const numOfRewards = [4, 6, 8];
+
+async function generateReward() {
+  rewards = [];
+  numOfItems = numOfRewards[Math.floor(Math.random() * 3) + 1];
+  console.log(numOfItems);
+  for (i = 0; i < numOfItems; i++) {
+    rewards.push(allRewards[Math.floor(Math.random() * allRewards.length)]);
+  }
+}
+
 class Wheel extends Component {
   constructor(props) {
     super(props);
@@ -16,6 +29,7 @@ class Wheel extends Component {
     this.child = null;
   }
   show = () => {
+    generateReward();
     this.setState({ show: true });
   };
 
@@ -48,10 +62,9 @@ class Wheel extends Component {
   //     <Text style={styles.tapToStart}>TAP 2 PLAY</Text>
   //   );
   // }
-  
+
   render() {
     let { show } = this.state;
-    const rewards = this.props.data;
     return (
       <Modal
         visible={show}
@@ -68,13 +81,13 @@ class Wheel extends Component {
             }
             borderWidth={12}
             borderColor={"#000000"}
-            knobSize={100}
+            knobSize={40}
             duration={2000}
             innerRadius={1}
-            colors={['#000000','#f1c232']}
+            colors={["#000000", "#f1c232"]}
             backgroundColor={"#f1c232"}
-            textColor={'#FFF'}
-            startText={'DoA'}
+            textColor={"#FFF"}
+            startText={"DoA"}
           />
         </View>
       </Modal>
@@ -87,7 +100,7 @@ export default Wheel;
 const styles = StyleSheet.create({
   tapToStart: {
     fontSize: 50,
-    color: '#fff',
-    fontWeight: 'bold'
-  }
+    color: "#fff",
+    fontWeight: "bold",
+  },
 });

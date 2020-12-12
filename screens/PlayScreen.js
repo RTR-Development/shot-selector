@@ -93,7 +93,9 @@ const PlayScreen = (props) => {
       setCountColor(transitionCountColor());
       setAlcColor(transitionAlcColor());
       setChanceColor(transitionChanceColor());
-      wheelRef.show();
+      if (Math.random() < 0.1) {
+        wheelRef.show();
+      }
     }
   }, [count, drinkABV, drinkChance]);
 
@@ -225,14 +227,7 @@ const PlayScreen = (props) => {
                   <Image source={{ uri: selectedImage }} style={styles.image} />
                 )}
               </View>
-              <Wheel
-                ref={(target) => (wheelRef = target)}
-                data={[
-                  '2x','Nothing',
-                  '2x','Nothing',
-                  '2x','Nothing'
-                ]}
-              />
+              <Wheel ref={(target) => (wheelRef = target)} />
               <View
                 style={{
                   flex: 1,
