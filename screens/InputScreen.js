@@ -319,9 +319,9 @@ const InputScreen = (props) => {
                 />
               </TouchableOpacity>
               {!selectedImage ? (
-                <Text style={styles.textIonicon}>Not selected</Text>
+                <Text style={styles.textIonicon}>Not selected :(</Text>
               ) : (
-                <Text style={styles.textIonicon}>Selected</Text>
+                <Text style={styles.textIonicon}>SELECTED!</Text>
               )}
             </View>
           </View>
@@ -357,7 +357,7 @@ const InputScreen = (props) => {
           </View>
           <View style={styles.flatListContainer}>
             {context.savedDrinks.length ? (
-              <Text style={styles.headListText}>Tap to delete</Text>
+              <Text style={styles.headListText}>TAP to delete</Text>
             ) : (
               <View></View>
             )}
@@ -372,9 +372,15 @@ const InputScreen = (props) => {
                     activeOpacity={0.7}
                   >
                     <View style={styles.list}>
+                      {/* <View style={styles.textBox}> */}
                       <Text style={styles.listText}>{itemData.item.name}</Text>
+                      {/* </View> */}
+                      {/* <View style={styles.textBox}> */}
                       <Text style={styles.listText}>{itemData.item.abv}</Text>
+                      {/* </View> */}
+                      {/* <View style={styles.textBox}> */}
                       <Text style={styles.listText}>{itemData.item.occ}</Text>
+                      {/* </View> */}
                     </View>
                   </TouchableOpacity>
                 </View>
@@ -430,6 +436,10 @@ const styles = StyleSheet.create({
   inputContainer: {
     marginTop: Config.deviceHeight * 0.01,
     flexDirection: "row",
+    borderWidth: 2,
+    borderColor: "#20232a",
+    borderRadius: 12,
+    backgroundColor: "#D1D1D1"
   },
   inputCategory: {
     marginHorizontal: Config.deviceWidth * 0.01,
@@ -438,6 +448,8 @@ const styles = StyleSheet.create({
     fontFamily: "assistant-regular",
     fontSize: Config.deviceWidth > 350 ? 20 : 18,
     textAlign: "center",
+    // backgroundColor: '#fff', 
+    // alignSelf: 'flex-start'
   },
   ionicon: {
     textAlign: "center",
@@ -447,6 +459,7 @@ const styles = StyleSheet.create({
     fontSize: Config.deviceWidth > 350 ? 14 : 13,
     color: "black",
     marginTop: Config.deviceHeight > 600 ? -4 : -3,
+    fontStyle: 'italic'
   },
   inputBox: {
     padding: Config.deviceHeight > 600 ? 5 : 4,
@@ -482,6 +495,7 @@ const styles = StyleSheet.create({
     color: Colors.white,
     fontFamily: "assistant-bold",
     fontSize: Config.deviceHeight > 600 ? 24 : 22,
+    fontSize: 30,
   },
   headListText: {
     textAlign: "center",
@@ -494,19 +508,30 @@ const styles = StyleSheet.create({
   },
   listContainer: {
     flex: 1,
-    borderTopWidth: 1,
+    borderTopWidth: 2,
+    borderColor: '#ec3a05',
   },
   list: {
-    borderBottomWidth: 1,
+    borderBottomWidth: 2,
+    borderRadius: 0,
+    borderColor: '#ec3a05',
     width: Config.deviceWidth,
     flexDirection: "row",
     paddingVertical: Config.deviceHeight * 0.01,
+    backgroundColor: '#d1d1d1'
   },
+  // textBox: {
+  //   flex: 1,
+  //   backgroundColor: '#fff'
+  // },
   listText: {
     flex: 1,
     textAlign: "center",
     fontFamily: "assistant-regular",
     fontSize: 16,
+    backgroundColor: '#fff', 
+    alignSelf: 'flex-start',
+    // color: '#ec3a05'
   },
 });
 
