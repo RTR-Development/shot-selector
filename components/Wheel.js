@@ -31,7 +31,7 @@ class Wheel extends Component {
     this.setState({ show: true });
   };
 
-  close = (value, index) => {
+  close = (value, index, shotName, shotSetter) => {
     this.setState({
       winnerValue: value,
       winnerIndex: index,
@@ -39,6 +39,11 @@ class Wheel extends Component {
     setTimeout(() => {
       this.setState({ show: false });
     }, 300);
+    if (this.state.winnerValue === "2x" || this.state.winnerValue === "1x") {
+      shotSetter(this.state.winnerValue + " " + shotName);
+    } else {
+      shotSetter(this.state.winnerValue);
+    }
   };
   // _renderTopToPlay() {
   //   if (this.state.started == false) {
@@ -87,7 +92,14 @@ class Wheel extends Component {
           <WheelOfFortune
             onRef={(ref) => (this.child = ref)}
             rewards={rewards}
-            getWinner={(value, index) => this.close(value, index)}
+            getWinner={(value, index) =>
+              this.close(
+                value,
+                index,
+                this.props.shotName,
+                this.props.shotSetter
+              )
+            }
             borderWidth={12}
             borderColor={"#000000"}
             knobSize={40}

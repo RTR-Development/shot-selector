@@ -230,6 +230,8 @@ const PlayScreen = (props) => {
               <Wheel
                 ref={(target) => (wheelRef = target)}
                 close={() => props.onChangeScreen("StartScreen")}
+                shotName={drinkName}
+                shotSetter={setDrinkName}
               />
               <View
                 style={{
