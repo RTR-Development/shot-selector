@@ -137,6 +137,89 @@ const InputScreen = (props) => {
     }
   };
 
+  const handleDefaultAction = async (context) => {
+    var defaultDrinks = [
+      "Bier",
+      "Vodka",
+      "Bacardi"
+    ];
+    var defaultABV = [
+      5,
+      35,
+      30
+    ];
+
+    var magic = Math.floor(Math.random()*defaultDrinks.length)
+
+    var randomItem = defaultDrinks[magic];
+    let drinkName = randomItem;
+
+    var randomABV = defaultABV[magic];
+    let drinkABV = randomABV;
+    let drinkOccurence = 1;
+    let newPath = '';
+
+
+
+    if (!drinkName) {
+      Alert.alert(
+        "No name specified",
+        "Please enter a name of the shot or drink",
+        [{ text: "OK" }]
+      );
+      //Check if a shot occurence has been added
+    } else if (!Number.isInteger(parseInt(drinkABV))) {
+      Alert.alert(
+        "No correct ALC specified",
+        "Please enter an alcohol percentage between 0% and 100%",
+        [{ text: "OK" }]
+      );
+    } else {
+      let newPath = "";
+      if (selectedImage) {
+        newPath = FileSystem.documentDirectory + selectedImage.split("/").pop();
+
+        try {
+          await FileSystem.moveAsync({
+            from: selectedImage,
+            to: newPath,
+          });
+        } catch (err) {
+          console.log(err);
+        }
+      }
+      try {
+        const dbResult = await insertShot(
+          drinkName,
+          drinkABV,
+          parseInt(drinkOccurence),
+          newPath
+        );
+        console.log(dbResult);
+        context.setSavedDrinks((curSavedDrinks) => [
+          {
+            id: dbResult.insertId,
+            name: drinkName,
+            abv: drinkABV,
+            occ: parseInt(drinkOccurence),
+            imageUri: newPath,
+          },
+          ...curSavedDrinks,
+        ]);
+        console.log("Data successfully added to database");
+      } catch (err) {
+        console.log("Failed to add data to database");
+        console.log(err);
+      }
+      //Clear all textinputs and image selector
+      setSelectedImage(null);
+      this.nameInput.clear();
+      this.abvInput.clear();
+      setDrinkOccurence(1);
+      this.occInput.setNativeProps({ value: 1 });
+    }
+  };
+
   //Delete selected shot out of SQLite database and Context database
   const handleDeleteAction = async (context, id) => {
     try {
@@ -163,6 +246,9 @@ const InputScreen = (props) => {
           </View>
           <View style={styles.inputContainer}>
             <View>
+              {/* <View style={[styles.inputCategory, { paddingTop: 8 }]}>
+                <Text style={styles.textCategory}>Test123:</Text>
+              </View> */}
               <View style={[styles.inputCategory, { paddingTop: 8 }]}>
                 <Text style={styles.textCategory}>Name:</Text>
               </View>
@@ -243,14 +329,31 @@ const InputScreen = (props) => {
             <Text style={styles.textCategory}>
               Total Drinks: {context.savedDrinks.length}
             </Text>
+            <View flexDirection='row'>
             <TouchableOpacity
-              onPress={() => handleAddAction(context)}
-              activeOpacity={0.7}
-            >
-              <View style={styles.buttonContainer}>
-                <Text style={styles.buttonText}>ADD</Text>
+                onPress={() => handleAddAction(context)}
+                activeOpacity={0.7}
+              >
+                <View style={styles.buttonContainer}>
+                  <Text style={styles.buttonText}>ADD!</Text>
+                </View>
+              </TouchableOpacity>
+              <View style={{ paddingTop: 34 }}>
+                  <TouchableOpacity 
+                    onPress={() => handleDefaultAction(context)} 
+                    activeOpacity={0.7}
+                  >
+                    <Ionicons
+                      name="md-add"
+                      size={30}
+                      color="white"
+                      style={styles.ionicon}
+                    />
+                  </TouchableOpacity>
+                  <Text style={styles.textIonicon}>(Or add some</Text>
+                  <Text style={styles.textIonicon}>default drinks!)</Text>
               </View>
-            </TouchableOpacity>
+            </View>
           </View>
           <View style={styles.flatListContainer}>
             {context.savedDrinks.length ? (
