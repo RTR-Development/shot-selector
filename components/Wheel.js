@@ -1,4 +1,4 @@
-import React, { Component, useEffect } from "react";
+import React, { Component } from "react";
 import { StyleSheet, View, Modal, TouchableOpacity } from "react-native";
 
 import colors from "../constants/colors";

@@ -138,18 +138,10 @@ const InputScreen = (props) => {
   };
 
   const handleDefaultAction = async (context) => {
-    var defaultDrinks = [
-      "Bier",
-      "Vodka",
-      "Bacardi"
-    ];
-    var defaultABV = [
-      5,
-      35,
-      30
-    ];
+    var defaultDrinks = ["Bier", "Vodka", "Bacardi"];
+    var defaultABV = [5, 35, 30];
 
-    var magic = Math.floor(Math.random()*defaultDrinks.length)
+    var magic = Math.floor(Math.random() * defaultDrinks.length);
 
     var randomItem = defaultDrinks[magic];
     let drinkName = randomItem;
@@ -157,9 +149,7 @@ const InputScreen = (props) => {
     var randomABV = defaultABV[magic];
     let drinkABV = randomABV;
     let drinkOccurence = 1;
-    let newPath = '';
-
-
+    let newPath = "";
 
     if (!drinkName) {
       Alert.alert(
@@ -267,11 +257,11 @@ const InputScreen = (props) => {
                   placeholderTextColor="rgba(100, 100, 100, 0.6)"
                   onChangeText={(value) => setDrinkName(value)}
                   ref={(input) => {
-                    this.nameInput = input;
+                    nameInput = input;
                   }}
                   returnKeyType="next"
                   onSubmitEditing={() => {
-                    this.abvInput.focus();
+                    abvInput.focus();
                   }}
                   blurOnSubmit={false}
                   numberOfLines={1}
@@ -286,7 +276,7 @@ const InputScreen = (props) => {
                   keyboardType="decimal-pad"
                   onChangeText={(value) => setDrinkABV(value)}
                   ref={(input) => {
-                    this.abvInput = input;
+                    abvInput = input;
                   }}
                   returnKeyType="done"
                   numberOfLines={1}
@@ -303,7 +293,7 @@ const InputScreen = (props) => {
                   thumbTintColor={Colors.darkGray}
                   onValueChange={(value) => setDrinkOccurence(value)}
                   ref={(input) => {
-                    this.occInput = input;
+                    occInput = input;
                   }}
                 />
                 <Text style={styles.sliderText}>{drinkOccurence}x</Text>
@@ -329,8 +319,8 @@ const InputScreen = (props) => {
             <Text style={styles.textCategory}>
               Total Drinks: {context.savedDrinks.length}
             </Text>
-            <View flexDirection='row'>
-            <TouchableOpacity
+            <View flexDirection="row">
+              <TouchableOpacity
                 onPress={() => handleAddAction(context)}
                 activeOpacity={0.7}
               >
@@ -339,19 +329,19 @@ const InputScreen = (props) => {
                 </View>
               </TouchableOpacity>
               <View style={{ paddingTop: 34 }}>
-                  <TouchableOpacity 
-                    onPress={() => handleDefaultAction(context)} 
-                    activeOpacity={0.7}
-                  >
-                    <Ionicons
-                      name="md-add"
-                      size={30}
-                      color="white"
-                      style={styles.ionicon}
-                    />
-                  </TouchableOpacity>
-                  <Text style={styles.textIonicon}>(Or add some</Text>
-                  <Text style={styles.textIonicon}>default drinks!)</Text>
+                <TouchableOpacity
+                  onPress={() => handleDefaultAction(context)}
+                  activeOpacity={0.7}
+                >
+                  <Ionicons
+                    name="md-add"
+                    size={30}
+                    color="white"
+                    style={styles.ionicon}
+                  />
+                </TouchableOpacity>
+                <Text style={styles.textIonicon}>(Or add some</Text>
+                <Text style={styles.textIonicon}>default drinks!)</Text>
               </View>
             </View>
           </View>
@@ -493,7 +483,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   listContainer: {
-    flex: 1,
     borderTopWidth: 1,
   },
   list: {
