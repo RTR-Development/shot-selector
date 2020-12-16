@@ -227,7 +227,10 @@ const PlayScreen = (props) => {
                   <Image source={{ uri: selectedImage }} style={styles.image} />
                 )}
               </View>
-              <Wheel ref={(target) => (wheelRef = target)} />
+              <Wheel
+                ref={(target) => (wheelRef = target)}
+                close={() => props.onChangeScreen("StartScreen")}
+              />
               <View
                 style={{
                   flex: 1,

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useEffect } from "react";
 import { StyleSheet, View, Modal, TouchableOpacity } from "react-native";
 
 import colors from "../constants/colors";
@@ -8,15 +8,6 @@ import WheelOfFortune from "react-native-wheel-of-fortune";
 let rewards = [];
 const allRewards = ["2x", "1x", "New shot", "No shot", "Hand out"];
 const numOfRewards = [4, 6, 8];
-
-async function generateReward() {
-  rewards = [];
-  numOfItems = numOfRewards[Math.floor(Math.random() * 3) + 1];
-  console.log(numOfItems);
-  for (i = 0; i < numOfItems; i++) {
-    rewards.push(allRewards[Math.floor(Math.random() * allRewards.length)]);
-  }
-}
 
 class Wheel extends Component {
   constructor(props) {
@@ -28,15 +19,27 @@ class Wheel extends Component {
     };
     this.child = null;
   }
+
   show = () => {
-    generateReward();
+    //Calculate random rewards for wheel
+    rewards = [];
+    numOfItems = numOfRewards[Math.floor(Math.random() * 3)];
+    for (i = 0; i < numOfItems; i++) {
+      rewards.push(allRewards[Math.floor(Math.random() * allRewards.length)]);
+    }
+    //Show wheel modal
     this.setState({ show: true });
   };
 
-  close = () => {
-    this.setState({ show: false });
+  close = (value, index) => {
+    this.setState({
+      winnerValue: value,
+      winnerIndex: index,
+    });
+    setTimeout(() => {
+      this.setState({ show: false });
+    }, 300);
   };
-
   // _renderTopToPlay() {
   //   if (this.state.started == false) {
   //       if (this.props.playButton) {
@@ -68,17 +71,23 @@ class Wheel extends Component {
     return (
       <Modal
         visible={show}
-        onRequestClose={this.close}
+        onRequestClose={this.props.close}
         animationType={"fade"}
         transparent={true}
       >
-        <View style={{ flex: 1 }}>
+        <View
+          style={{
+            flex: 1,
+            alignSelf: "center",
+            maxWidth: "90%",
+            maxHeight: "90%",
+            paddingBottom: Config.deviceHeight * 0.28,
+          }}
+        >
           <WheelOfFortune
             onRef={(ref) => (this.child = ref)}
             rewards={rewards}
-            getWinner={(value, index) =>
-              this.setState({ winnerValue: value, winnerIndex: index })
-            }
+            getWinner={(value, index) => this.close(value, index)}
             borderWidth={12}
             borderColor={"#000000"}
             knobSize={40}
