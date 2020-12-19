@@ -3,7 +3,7 @@ import { StyleSheet, View, Modal, TouchableOpacity } from "react-native";
 
 import colors from "../constants/colors";
 import Config from "../components/Config";
-import WheelOfFortune from "react-native-wheel-of-fortune";
+import WheelOfFortune from "./WheelOfFortune";
 
 let rewards = [];
 const allRewards = ["2x", "1x", "New shot", "No shot", "Hand out"];
@@ -45,31 +45,6 @@ class Wheel extends Component {
       shotSetter(this.state.winnerValue);
     }
   };
-  // _renderTopToPlay() {
-  //   if (this.state.started == false) {
-  //       if (this.props.playButton) {
-  //           return (
-  //               <TouchableOpacity onPress={() => this._onPress()}>
-  //                   {this.props.playButton()}
-  //               </TouchableOpacity>
-  //           );
-  //       } else {
-  //           return (
-  //               <View style={styles.modal}>
-  //                   <TouchableOpacity onPress={() => this._onPress()}>
-  //                       <RNText style={styles.startText}>{this.props.startText ? this.props.startText : "TAP2PLAY"}</RNText>
-  //                   </TouchableOpacity>
-  //               </View>
-  //           );
-  //       }
-  //   }
-  // }
-
-  // _renderPlayButton = () => {
-  //   return (
-  //     <Text style={styles.tapToStart}>TAP 2 PLAY</Text>
-  //   );
-  // }
 
   render() {
     let { show } = this.state;
@@ -107,8 +82,6 @@ class Wheel extends Component {
             innerRadius={1}
             colors={["#000000", "#f1c232"]}
             backgroundColor={"#f1c232"}
-            textColor={"#FFF"}
-            startText={"DoA"}
           />
         </View>
       </Modal>
