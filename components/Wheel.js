@@ -39,7 +39,11 @@ class Wheel extends Component {
     setTimeout(() => {
       this.setState({ show: false });
     }, 300);
-    if (this.state.winnerValue === "2x" || this.state.winnerValue === "1x") {
+    if (
+      this.state.winnerValue === "2x" ||
+      this.state.winnerValue === "1x" ||
+      this.state.winnerValue === "Hand out"
+    ) {
       shotSetter(this.state.winnerValue + " " + shotName);
     } else {
       shotSetter(this.state.winnerValue);
@@ -82,6 +86,7 @@ class Wheel extends Component {
             innerRadius={1}
             colors={["#000000", "#f1c232"]}
             backgroundColor={"#f1c232"}
+            textAngle="Vertical"
           />
         </View>
       </Modal>

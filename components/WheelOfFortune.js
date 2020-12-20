@@ -137,17 +137,32 @@ class WheelOfFortune extends Component {
   _textRender = (x, y, number, i) => (
     <Text
       x={x - number.length * 5}
-      y={y - 40}
+      y={y - 80}
       fill={this.props.textColor ? this.props.textColor : "#fff"}
       textAnchor="middle"
       fontSize={this.fontSize}
     >
       {Array.from({ length: number.length }).map((_, j) => {
-        return (
-          <TSpan dx={this.fontSize * 0.07} key={`arc-${i}-slice-${j}`}>
-            {number.charAt(j)}
-          </TSpan>
-        );
+        // Render reward text vertically
+        if (this.props.textAngle === "Vertical") {
+          return (
+            <TSpan x={x} dy={this.fontSize} key={`arc-${i}-slice-${j}`}>
+              {number.charAt(j)}
+            </TSpan>
+          );
+        }
+        // Render reward text horizontally
+        else {
+          return (
+            <TSpan
+              y={y - 40}
+              dx={this.fontSize * 0.07}
+              key={`arc-${i}-slice-${j}`}
+            >
+              {number.charAt(j)}
+            </TSpan>
+          );
+        }
       })}
     </Text>
   );
