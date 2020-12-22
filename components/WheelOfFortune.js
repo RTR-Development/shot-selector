@@ -144,7 +144,7 @@ class WheelOfFortune extends Component {
     >
       {Array.from({ length: number.length }).map((_, j) => {
         // Render reward text vertically
-        if (this.props.textAngle === "Vertical") {
+        if (this.props.textAngle === "vertical") {
           return (
             <TSpan x={x} dy={this.fontSize} key={`arc-${i}-slice-${j}`}>
               {number.charAt(j)}

@@ -86,7 +86,7 @@ class Wheel extends Component {
             innerRadius={1}
             colors={["#000000", "#f1c232"]}
             backgroundColor={"#f1c232"}
-            textAngle="Vertical"
+            //textAngle={"vertical"}
           />
         </View>
       </Modal>
