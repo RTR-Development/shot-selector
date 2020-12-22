@@ -68,8 +68,8 @@ export default function App() {
         newStatus = await insertWheel(1);
         status = await fetchWheel();
         dataStatus = status.rows._array;
-        setSavedWheel(dataStatus);
       }
+      setSavedWheel(dataStatus);
       console.log("Data fetched from database");
     } catch (error) {
       console.log("Fetching data from database failed");
