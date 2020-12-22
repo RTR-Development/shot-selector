@@ -82,6 +82,9 @@ const PlayScreen = (props) => {
         setDrinkChance(((element.occ / countOcc) * 100).toFixed(0));
         setSelectedImage(element.imageUri);
         setCount(count + 1);
+        if (context.savedWheel[0].active && Math.random() < 0.1) {
+          wheelRef.show();
+        }
         break;
       }
     }
@@ -93,9 +96,6 @@ const PlayScreen = (props) => {
       setCountColor(transitionCountColor());
       setAlcColor(transitionAlcColor());
       setChanceColor(transitionChanceColor());
-      if (Math.random() < 0.1) {
-        wheelRef.show();
-      }
     }
   }, [count, drinkABV, drinkChance]);
 

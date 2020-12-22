@@ -14,7 +14,7 @@ import Config from "../components/Config";
 import Colors from "../constants/colors";
 
 const StartScreen = (props) => {
-  //Let user send a bug report through the mail
+  //Open link to privacy statement
   privacyHandler = async () => {
     Alert.alert(
       "Privacy Statement",
@@ -36,6 +36,7 @@ const StartScreen = (props) => {
     );
   };
 
+  //Go to store page for user to like the app
   likeHandler = async () => {
     Linking.openURL(
       "http://play.google.com/store/apps/details?id=com.rtrdevelopment.shot_selector"

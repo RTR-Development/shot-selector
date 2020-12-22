@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   Alert,
   Image,
+  Switch,
 } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";
@@ -344,6 +345,10 @@ const InputScreen = (props) => {
                 <Text style={styles.textIonicon}>default drinks!)</Text>
               </View>
             </View>
+          </View>
+          <View style={{ flexDirection: "row" }}>
+            <Text>Wheel:</Text>
+            <Switch value={context.savedWheel[0].active ? true : false} />
           </View>
           <View style={styles.flatListContainer}>
             {context.savedDrinks.length ? (
