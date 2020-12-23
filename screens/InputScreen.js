@@ -21,7 +21,7 @@ import Colors from "../constants/colors";
 import { BottomPopup } from "../components/BottomPopup";
 
 import DrinksContext from "../context/drinks-context";
-import { insertShot, deleteShot } from "../database/sqlite";
+import { insertShot, deleteShot, updateWheel } from "../database/sqlite";
 
 const popupList = [
   {
@@ -225,6 +225,21 @@ const InputScreen = (props) => {
     }
   };
 
+  const handleSwitchAction = async (context) => {
+    try {
+      if (context.savedWheel[0].active == 1) {
+        const dbResult = await updateWheel(0);
+        context.setSavedWheel([{ active: 0 }]);
+      } else {
+        const dbResult = await updateWheel(1);
+        context.setSavedWheel([{ active: 1 }]);
+      }
+    } catch (err) {
+      console.log("Failed to change wheel status");
+      console.log(err);
+    }
+  };
+
   return (
     <DrinksContext.Consumer>
       {(context) => (
@@ -348,7 +363,10 @@ const InputScreen = (props) => {
           </View>
           <View style={{ flexDirection: "row" }}>
             <Text>Wheel:</Text>
-            <Switch value={context.savedWheel[0].active ? true : false} />
+            <Switch
+              onValueChange={() => handleSwitchAction(context)}
+              value={context.savedWheel[0].active ? true : false}
+            />
           </View>
           <View style={styles.flatListContainer}>
             {context.savedDrinks.length ? (
