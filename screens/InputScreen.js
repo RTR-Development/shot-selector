@@ -305,8 +305,8 @@ const InputScreen = (props) => {
                   maximumValue={10}
                   step={1}
                   minimumTrackTintColor="#FFFFFF"
-                  maximumTrackTintColor="#000000"
-                  thumbTintColor={Colors.darkGray}
+                  maximumTrackTintColor="#D1D1D1"
+                  thumbTintColor="white"
                   onValueChange={(value) => setDrinkOccurence(value)}
                   ref={(input) => {
                     occInput = input;
@@ -325,48 +325,47 @@ const InputScreen = (props) => {
                 />
               </TouchableOpacity>
               {!selectedImage ? (
-                <Text style={styles.textIonicon}>Not selected :(</Text>
+                <Text style={styles.textIonicon}>Not selected</Text>
               ) : (
-                <Text style={styles.textIonicon}>SELECTED!</Text>
+                <Text style={styles.textIonicon}>SELECTED</Text>
               )}
             </View>
           </View>
           <View style={styles.actionContainer}>
-            <Text style={styles.textCategory}>
+            <Text style={[styles.textCategory, { color: "black" }]}>
               Total Drinks: {context.savedDrinks.length}
             </Text>
-            <View flexDirection="row">
-              <TouchableOpacity
-                onPress={() => handleAddAction(context)}
-                activeOpacity={0.7}
-              >
-                <View style={styles.buttonContainer}>
-                  <Text style={styles.buttonText}>ADD!</Text>
-                </View>
-              </TouchableOpacity>
-              <View style={{ paddingTop: 34 }}>
-                <TouchableOpacity
-                  onPress={() => handleDefaultAction(context)}
-                  activeOpacity={0.7}
-                >
-                  <Ionicons
-                    name="md-add"
-                    size={30}
-                    color="white"
-                    style={styles.ionicon}
-                  />
-                </TouchableOpacity>
-                <Text style={styles.textIonicon}>(Or add some</Text>
-                <Text style={styles.textIonicon}>default drinks!)</Text>
+            <TouchableOpacity
+              onPress={() => handleAddAction(context)}
+              activeOpacity={0.7}
+            >
+              <View style={styles.buttonContainer}>
+                <Text style={styles.buttonText}>ADD!</Text>
               </View>
-            </View>
+            </TouchableOpacity>
           </View>
           <View style={{ flexDirection: "row" }}>
-            <Text>Wheel:</Text>
-            <Switch
-              onValueChange={() => handleSwitchAction(context)}
-              value={context.savedWheel[0].active ? true : false}
-            />
+            <View style={{ flex: 1 }}>
+              <Text style={{ textAlign: "center" }}>Wheel:</Text>
+              <Switch
+                style={{ alignSelf: "center" }}
+                onValueChange={() => handleSwitchAction(context)}
+                value={context.savedWheel[0].active ? true : false}
+              />
+            </View>
+            <View style={{ flex: 1 }}>
+              <Text style={{ textAlign: "center" }}>Random:</Text>
+              <TouchableOpacity
+                style={{ alignSelf: "center" }}
+                onPress={() => handleDefaultAction(context)}
+                activeOpacity={0.7}
+              >
+                <Image
+                  source={require("../assets/images/icon_shot.png")}
+                  style={{ width: 30, height: 30 }}
+                />
+              </TouchableOpacity>
+            </View>
           </View>
           <View style={styles.flatListContainer}>
             {context.savedDrinks.length ? (
@@ -449,10 +448,11 @@ const styles = StyleSheet.create({
   inputContainer: {
     marginTop: Config.deviceHeight * 0.01,
     flexDirection: "row",
-    borderWidth: 2,
-    borderColor: "#20232a",
+    // borderWidth: 2,
+    // borderColor: "#D1D1D1",
+    padding: Config.deviceHeight > 700 ? 7 : 5,
     borderRadius: 12,
-    backgroundColor: "#D1D1D1",
+    backgroundColor: "#20232a",
   },
   inputCategory: {
     marginHorizontal: Config.deviceWidth * 0.01,
@@ -461,7 +461,7 @@ const styles = StyleSheet.create({
     fontFamily: "assistant-regular",
     fontSize: Config.deviceWidth > 350 ? 20 : 18,
     textAlign: "center",
-    // backgroundColor: '#fff',
+    color: "white",
     // alignSelf: 'flex-start'
   },
   ionicon: {
@@ -470,7 +470,7 @@ const styles = StyleSheet.create({
   textIonicon: {
     fontFamily: "assistant-regular",
     fontSize: Config.deviceWidth > 350 ? 14 : 13,
-    color: "black",
+    color: "white",
     marginTop: Config.deviceHeight > 600 ? -4 : -3,
     fontStyle: "italic",
   },
@@ -479,7 +479,7 @@ const styles = StyleSheet.create({
   },
   input: {
     fontFamily: "assistant-regular",
-    borderColor: "black",
+    borderColor: "#D1D1D1",
     borderWidth: 1.5,
     borderRadius: 3,
     padding: Config.deviceHeight > 600 ? 2 : 1.8,
@@ -492,6 +492,7 @@ const styles = StyleSheet.create({
     fontSize: Config.deviceHeight > 600 ? 18 : 16,
     textAlign: "center",
     marginTop: -7.5,
+    color: "white",
   },
   actionContainer: {
     marginTop: Config.deviceHeight * 0.02,
@@ -521,16 +522,16 @@ const styles = StyleSheet.create({
   },
   listContainer: {
     borderTopWidth: 2,
-    borderColor: "#ec3a05",
+    borderColor: Colors.darkGray,
   },
   list: {
     borderBottomWidth: 2,
     borderRadius: 0,
-    borderColor: "#ec3a05",
+    borderColor: Colors.darkGray,
     width: Config.deviceWidth,
     flexDirection: "row",
-    paddingVertical: Config.deviceHeight * 0.01,
-    backgroundColor: "#d1d1d1",
+    paddingVertical: Config.deviceHeight * 0.003,
+    backgroundColor: "#D1D1D1",
   },
   // textBox: {
   //   flex: 1,
@@ -541,7 +542,8 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontFamily: "assistant-regular",
     fontSize: 16,
-    backgroundColor: "#fff",
+    paddingVertical: Config.deviceHeight * 0.007,
+    backgroundColor: "white",
     alignSelf: "flex-start",
     // color: '#ec3a05'
   },
