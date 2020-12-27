@@ -9,13 +9,21 @@ import InputScreen from "./screens/InputScreen";
 import PlayScreen from "./screens/PlayScreen";
 import StartScreen from "./screens/StartScreen";
 
-import Colors from "./constants/colors";
-import { init, fetchShots } from "./database/sqlite";
+import COLORS from "./constants/colors";
+import {
+  initShot,
+  fetchShots,
+  initWheel,
+  fetchWheel,
+  insertWheel,
+} from "./database/sqlite";
 
 //Initialize SQLite database
-init()
+initShot()
   .then(() => {
-    console.log("Initialized database");
+    initWheel().then(() => {
+      console.log("Initialized database");
+    });
   })
   .catch((err) => {
     console.log("Initializing database failed.");
@@ -39,6 +47,7 @@ export default function App() {
   const [content, setContent] = useState("StartScreen");
 
   const [savedDrinks, setSavedDrinks] = useState([]);
+  const [savedWheel, setSavedWheel] = useState([]);
 
   //Handle a screen change
   const changeScreenHandler = (selectedScreen) => {
@@ -50,8 +59,17 @@ export default function App() {
   async function fetchData() {
     try {
       const fetch = await fetchShots();
-      const data = fetch.rows._array;
-      setSavedDrinks(data.reverse());
+      const dataFetch = fetch.rows._array;
+      setSavedDrinks(dataFetch.reverse());
+
+      let status = await fetchWheel();
+      let dataStatus = status.rows._array;
+      if (!dataStatus.length) {
+        newStatus = await insertWheel(1);
+        status = await fetchWheel();
+        dataStatus = status.rows._array;
+      }
+      setSavedWheel(dataStatus);
       console.log("Data fetched from database");
     } catch (error) {
       console.log("Fetching data from database failed");
@@ -94,6 +112,8 @@ export default function App() {
       value={{
         savedDrinks: savedDrinks,
         setSavedDrinks: setSavedDrinks,
+        savedWheel: savedWheel,
+        setSavedWheel: setSavedWheel,
       }}
     >
       <View style={styles.screen}>{activeScreen}</View>
@@ -103,7 +123,7 @@ export default function App() {
 
 const styles = StyleSheet.create({
   screen: {
-    backgroundColor: Colors.sandYellow,
+    backgroundColor: COLORS.primaryColor,
     flex: 1,
     alignItems: "center",
     justifyContent: "center",

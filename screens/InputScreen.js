@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   Alert,
   Image,
+  Switch,
 } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";
@@ -16,11 +17,11 @@ import * as FileSystem from "expo-file-system";
 import Slider from "@react-native-community/slider";
 
 import Config from "../components/Config";
-import Colors from "../constants/colors";
-import { BottomPopup } from "../components/BottomPopup";
+import COLORS from "../constants/colors";
+import BottomPopup from "../components/BottomPopup";
 
 import DrinksContext from "../context/drinks-context";
-import { insertShot, deleteShot } from "../database/sqlite";
+import { insertShot, deleteShot, updateWheel } from "../database/sqlite";
 
 const popupList = [
   {
@@ -137,6 +138,79 @@ const InputScreen = (props) => {
     }
   };
 
+  const handleDefaultAction = async (context) => {
+    var defaultDrinks = ["Bier", "Vodka", "Bacardi"];
+    var defaultABV = [5, 35, 30];
+
+    var magic = Math.floor(Math.random() * defaultDrinks.length);
+
+    var randomItem = defaultDrinks[magic];
+    let drinkName = randomItem;
+
+    var randomABV = defaultABV[magic];
+    let drinkABV = randomABV;
+    let drinkOccurence = 1;
+    let newPath = "";
+
+    if (!drinkName) {
+      Alert.alert(
+        "No name specified",
+        "Please enter a name of the shot or drink",
+        [{ text: "OK" }]
+      );
+      //Check if a shot occurence has been added
+    } else if (!Number.isInteger(parseInt(drinkABV))) {
+      Alert.alert(
+        "No correct ALC specified",
+        "Please enter an alcohol percentage between 0% and 100%",
+        [{ text: "OK" }]
+      );
+    } else {
+      let newPath = "";
+      if (selectedImage) {
+        newPath = FileSystem.documentDirectory + selectedImage.split("/").pop();
+
+        try {
+          await FileSystem.moveAsync({
+            from: selectedImage,
+            to: newPath,
+          });
+        } catch (err) {
+          console.log(err);
+        }
+      }
+      try {
+        const dbResult = await insertShot(
+          drinkName,
+          drinkABV,
+          parseInt(drinkOccurence),
+          newPath
+        );
+        console.log(dbResult);
+        context.setSavedDrinks((curSavedDrinks) => [
+          {
+            id: dbResult.insertId,
+            name: drinkName,
+            abv: drinkABV,
+            occ: parseInt(drinkOccurence),
+            imageUri: newPath,
+          },
+          ...curSavedDrinks,
+        ]);
+        console.log("Data successfully added to database");
+      } catch (err) {
+        console.log("Failed to add data to database");
+        console.log(err);
+      }
+      //Clear all textinputs and image selector
+      setSelectedImage(null);
+      this.nameInput.clear();
+      this.abvInput.clear();
+      setDrinkOccurence(1);
+      this.occInput.setNativeProps({ value: 1 });
+    }
+  };
+
   //Delete selected shot out of SQLite database and Context database
   const handleDeleteAction = async (context, id) => {
     try {
@@ -147,6 +221,21 @@ const InputScreen = (props) => {
       console.log("Data successfully deleted from database");
     } catch (err) {
       console.log("Failed to delete data from database");
+      console.log(err);
+    }
+  };
+
+  const handleSwitchAction = async (context) => {
+    try {
+      if (context.savedWheel[0].active == 1) {
+        const dbResult = await updateWheel(0);
+        context.setSavedWheel([{ active: 0 }]);
+      } else {
+        const dbResult = await updateWheel(1);
+        context.setSavedWheel([{ active: 1 }]);
+      }
+    } catch (err) {
+      console.log("Failed to change wheel status");
       console.log(err);
     }
   };
@@ -163,6 +252,9 @@ const InputScreen = (props) => {
           </View>
           <View style={styles.inputContainer}>
             <View>
+              {/* <View style={[styles.inputCategory, { paddingTop: 8 }]}>
+                <Text style={styles.textCategory}>Test123:</Text>
+              </View> */}
               <View style={[styles.inputCategory, { paddingTop: 8 }]}>
                 <Text style={styles.textCategory}>Name:</Text>
               </View>
@@ -181,11 +273,11 @@ const InputScreen = (props) => {
                   placeholderTextColor="rgba(100, 100, 100, 0.6)"
                   onChangeText={(value) => setDrinkName(value)}
                   ref={(input) => {
-                    this.nameInput = input;
+                    nameInput = input;
                   }}
                   returnKeyType="next"
                   onSubmitEditing={() => {
-                    this.abvInput.focus();
+                    abvInput.focus();
                   }}
                   blurOnSubmit={false}
                   numberOfLines={1}
@@ -200,7 +292,7 @@ const InputScreen = (props) => {
                   keyboardType="decimal-pad"
                   onChangeText={(value) => setDrinkABV(value)}
                   ref={(input) => {
-                    this.abvInput = input;
+                    abvInput = input;
                   }}
                   returnKeyType="done"
                   numberOfLines={1}
@@ -213,11 +305,11 @@ const InputScreen = (props) => {
                   maximumValue={10}
                   step={1}
                   minimumTrackTintColor="#FFFFFF"
-                  maximumTrackTintColor="#000000"
-                  thumbTintColor={Colors.darkGray}
+                  maximumTrackTintColor="#D1D1D1"
+                  thumbTintColor="white"
                   onValueChange={(value) => setDrinkOccurence(value)}
                   ref={(input) => {
-                    this.occInput = input;
+                    occInput = input;
                   }}
                 />
                 <Text style={styles.sliderText}>{drinkOccurence}x</Text>
@@ -235,12 +327,12 @@ const InputScreen = (props) => {
               {!selectedImage ? (
                 <Text style={styles.textIonicon}>Not selected</Text>
               ) : (
-                <Text style={styles.textIonicon}>Selected</Text>
+                <Text style={styles.textIonicon}>SELECTED</Text>
               )}
             </View>
           </View>
           <View style={styles.actionContainer}>
-            <Text style={styles.textCategory}>
+            <Text style={[styles.textCategory, { color: "black" }]}>
               Total Drinks: {context.savedDrinks.length}
             </Text>
             <TouchableOpacity
@@ -248,13 +340,36 @@ const InputScreen = (props) => {
               activeOpacity={0.7}
             >
               <View style={styles.buttonContainer}>
-                <Text style={styles.buttonText}>ADD</Text>
+                <Text style={styles.buttonText}>ADD!</Text>
               </View>
             </TouchableOpacity>
           </View>
+          <View style={{ flexDirection: "row" }}>
+            <View style={{ flex: 1 }}>
+              <Text style={{ textAlign: "center" }}>Wheel:</Text>
+              <Switch
+                style={{ alignSelf: "center" }}
+                onValueChange={() => handleSwitchAction(context)}
+                value={context.savedWheel[0].active ? true : false}
+              />
+            </View>
+            <View style={{ flex: 1 }}>
+              <Text style={{ textAlign: "center" }}>Random:</Text>
+              <TouchableOpacity
+                style={{ alignSelf: "center" }}
+                onPress={() => handleDefaultAction(context)}
+                activeOpacity={0.7}
+              >
+                <Image
+                  source={require("../assets/images/icon_shot.png")}
+                  style={{ width: 30, height: 30 }}
+                />
+              </TouchableOpacity>
+            </View>
+          </View>
           <View style={styles.flatListContainer}>
             {context.savedDrinks.length ? (
-              <Text style={styles.headListText}>Tap to delete</Text>
+              <Text style={styles.headListText}>TAP to delete</Text>
             ) : (
               <View></View>
             )}
@@ -269,9 +384,15 @@ const InputScreen = (props) => {
                     activeOpacity={0.7}
                   >
                     <View style={styles.list}>
+                      {/* <View style={styles.textBox}> */}
                       <Text style={styles.listText}>{itemData.item.name}</Text>
+                      {/* </View> */}
+                      {/* <View style={styles.textBox}> */}
                       <Text style={styles.listText}>{itemData.item.abv}</Text>
+                      {/* </View> */}
+                      {/* <View style={styles.textBox}> */}
                       <Text style={styles.listText}>{itemData.item.occ}</Text>
+                      {/* </View> */}
                     </View>
                   </TouchableOpacity>
                 </View>
@@ -327,6 +448,11 @@ const styles = StyleSheet.create({
   inputContainer: {
     marginTop: Config.deviceHeight * 0.01,
     flexDirection: "row",
+    // borderWidth: 2,
+    // borderColor: "#D1D1D1",
+    padding: Config.deviceHeight > 700 ? 7 : 5,
+    borderRadius: 12,
+    backgroundColor: COLORS.secondaryColor,
   },
   inputCategory: {
     marginHorizontal: Config.deviceWidth * 0.01,
@@ -335,6 +461,8 @@ const styles = StyleSheet.create({
     fontFamily: "assistant-regular",
     fontSize: Config.deviceWidth > 350 ? 20 : 18,
     textAlign: "center",
+    color: COLORS.white,
+    // alignSelf: 'flex-start'
   },
   ionicon: {
     textAlign: "center",
@@ -342,20 +470,21 @@ const styles = StyleSheet.create({
   textIonicon: {
     fontFamily: "assistant-regular",
     fontSize: Config.deviceWidth > 350 ? 14 : 13,
-    color: "black",
+    color: COLORS.white,
     marginTop: Config.deviceHeight > 600 ? -4 : -3,
+    fontStyle: "italic",
   },
   inputBox: {
     padding: Config.deviceHeight > 600 ? 5 : 4,
   },
   input: {
     fontFamily: "assistant-regular",
-    borderColor: "black",
+    borderColor: COLORS.shadow,
     borderWidth: 1.5,
     borderRadius: 3,
     padding: Config.deviceHeight > 600 ? 2 : 1.8,
     textAlign: "center",
-    backgroundColor: "white",
+    backgroundColor: COLORS.white,
     width: Config.deviceWidth / 2.1,
   },
   sliderText: {
@@ -363,6 +492,7 @@ const styles = StyleSheet.create({
     fontSize: Config.deviceHeight > 600 ? 18 : 16,
     textAlign: "center",
     marginTop: -7.5,
+    color: COLORS.white,
   },
   actionContainer: {
     marginTop: Config.deviceHeight * 0.02,
@@ -370,15 +500,16 @@ const styles = StyleSheet.create({
   buttonContainer: {
     width: Config.deviceWidth * 0.25,
     paddingVertical: Config.deviceWidth * 0.04,
-    backgroundColor: Colors.darkGray,
+    backgroundColor: COLORS.secondaryColor,
     borderRadius: 20,
     margin: 12,
   },
   buttonText: {
     textAlign: "center",
-    color: Colors.white,
+    color: COLORS.white,
     fontFamily: "assistant-bold",
     fontSize: Config.deviceHeight > 600 ? 24 : 22,
+    fontSize: 30,
   },
   headListText: {
     textAlign: "center",
@@ -390,20 +521,31 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   listContainer: {
-    flex: 1,
-    borderTopWidth: 1,
+    borderTopWidth: 2,
+    borderColor: COLORS.secondaryColor,
   },
   list: {
-    borderBottomWidth: 1,
+    borderBottomWidth: 2,
+    borderRadius: 0,
+    borderColor: COLORS.secondaryColor,
     width: Config.deviceWidth,
     flexDirection: "row",
-    paddingVertical: Config.deviceHeight * 0.01,
+    paddingVertical: Config.deviceHeight * 0.003,
+    backgroundColor: COLORS.shadow,
   },
+  // textBox: {
+  //   flex: 1,
+  //   backgroundColor: '#fff'
+  // },
   listText: {
     flex: 1,
     textAlign: "center",
     fontFamily: "assistant-regular",
     fontSize: 16,
+    paddingVertical: Config.deviceHeight * 0.007,
+    backgroundColor: COLORS.white,
+    alignSelf: "flex-start",
+    // color: '#ec3a05'
   },
 });
 

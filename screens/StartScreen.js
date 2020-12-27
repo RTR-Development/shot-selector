@@ -11,10 +11,10 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 
 import Config from "../components/Config";
-import Colors from "../constants/colors";
+import COLORS from "../constants/colors";
 
 const StartScreen = (props) => {
-  //Let user send a bug report through the mail
+  //Open link to privacy statement
   privacyHandler = async () => {
     Alert.alert(
       "Privacy Statement",
@@ -36,6 +36,7 @@ const StartScreen = (props) => {
     );
   };
 
+  //Go to store page for user to like the app
   likeHandler = async () => {
     Linking.openURL(
       "http://play.google.com/store/apps/details?id=com.rtrdevelopment.shot_selector"
@@ -76,14 +77,14 @@ const StartScreen = (props) => {
           <Ionicons
             name="md-help-circle"
             size={Config.deviceHeight > 600 ? 48 : 42}
-            color="white"
+            color={COLORS.white}
           />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => likeHandler()} style={styles.ionicon}>
           <Ionicons
             name="md-thumbs-up"
             size={Config.deviceHeight > 600 ? 48 : 42}
-            color="white"
+            color={COLORS.white}
           />
         </TouchableOpacity>
       </View>
@@ -113,14 +114,14 @@ const styles = StyleSheet.create({
     marginBottom: Config.deviceHeight * 0.07,
   },
   buttonContainer: {
-    backgroundColor: Colors.darkGray,
+    backgroundColor: COLORS.secondaryColor,
     borderRadius: 30,
     margin: Config.deviceHeight > 600 ? 12 : 11,
     paddingVertical: Config.deviceHeight > 600 ? 16 : 15,
     paddingHorizontal: Config.deviceHeight > 600 ? 12 : 11,
   },
   buttonText: {
-    color: Colors.white,
+    color: COLORS.white,
     fontFamily: "assistant-bold",
     textAlign: "center",
     fontSize: Config.deviceHeight > 600 ? 40 : 35,

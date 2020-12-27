@@ -1,6 +1,7 @@
 export default {
-  sandYellow: "#f1c232",
-  darkGray: "#212121",
-  white: "#ffffff",
-  black: "#000000",
+  primaryColor: "#f1c232",
+  secondaryColor: "#212121",
+  shadow: "#d1d1d1",
+  white: "#fff",
+  black: "#000",
 };

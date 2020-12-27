@@ -10,6 +10,7 @@
   "dependencies": {
     "@expo/vector-icons": "^10.2.1",
     "@react-native-community/slider": "3.0.0",
+    "d3-shape": "^2.0.0",
     "expo": "~38.0.8",
     "expo-file-system": "~9.0.1",
     "expo-image-picker": "~8.3.0",
@@ -19,6 +20,7 @@
     "react": "~16.11.0",
     "react-dom": "~16.11.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-38.0.2.tar.gz",
+    "react-native-svg": "12.1.0",
     "react-native-web": "~0.11.7"
   },
   "devDependencies": {
