@@ -9,7 +9,7 @@ import InputScreen from "./screens/InputScreen";
 import PlayScreen from "./screens/PlayScreen";
 import StartScreen from "./screens/StartScreen";
 
-import Colors from "./constants/colors";
+import COLORS from "./constants/colors";
 import {
   initShot,
   fetchShots,
@@ -123,7 +123,7 @@ export default function App() {
 
 const styles = StyleSheet.create({
   screen: {
-    backgroundColor: Colors.sandYellow,
+    backgroundColor: COLORS.primaryColor,
     flex: 1,
     alignItems: "center",
     justifyContent: "center",

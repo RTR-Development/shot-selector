@@ -10,7 +10,7 @@ import {
 
 import { Ionicons } from "@expo/vector-icons";
 
-import Colors from "../constants/colors";
+import COLORS from "../constants/colors";
 import DrinksContext from "../context/drinks-context";
 import Config from "../components/Config";
 import Wheel from "../components/Wheel";
@@ -173,7 +173,7 @@ const PlayScreen = (props) => {
                     <Ionicons
                       name="md-arrow-round-back"
                       size={22}
-                      color="black"
+                      color={COLORS.black}
                     />
                     <Text
                       style={{
@@ -200,7 +200,11 @@ const PlayScreen = (props) => {
                     >
                       press{" "}
                     </Text>
-                    <Ionicons name="md-finger-print" size={22} color="black" />
+                    <Ionicons
+                      name="md-finger-print"
+                      size={22}
+                      color={COLORS.black}
+                    />
                     <Text
                       style={{
                         textAlign: "center",
@@ -357,13 +361,13 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     alignSelf: "center",
-    backgroundColor: Colors.darkGray,
+    backgroundColor: COLORS.secondaryColor,
     width: Config.deviceWidth * 0.6,
     borderRadius: 30,
     paddingVertical: Config.deviceHeight > 600 ? 20 : 18,
   },
   buttonText: {
-    color: Colors.white,
+    color: COLORS.white,
     fontFamily: "assistant-bold",
     textAlign: "center",
     fontSize: Config.deviceHeight > 600 ? 50 : 46,
@@ -385,9 +389,9 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontFamily: "assistant-bold",
     fontSize: Config.deviceHeight > 600 ? 40 : 36,
-    color: "white",
+    color: COLORS.white,
     borderWidth: 1,
-    backgroundColor: Colors.darkGray,
+    backgroundColor: COLORS.secondaryColor,
   },
 });
 

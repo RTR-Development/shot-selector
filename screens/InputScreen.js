@@ -17,8 +17,8 @@ import * as FileSystem from "expo-file-system";
 import Slider from "@react-native-community/slider";
 
 import Config from "../components/Config";
-import Colors from "../constants/colors";
-import { BottomPopup } from "../components/BottomPopup";
+import COLORS from "../constants/colors";
+import BottomPopup from "../components/BottomPopup";
 
 import DrinksContext from "../context/drinks-context";
 import { insertShot, deleteShot, updateWheel } from "../database/sqlite";
@@ -452,7 +452,7 @@ const styles = StyleSheet.create({
     // borderColor: "#D1D1D1",
     padding: Config.deviceHeight > 700 ? 7 : 5,
     borderRadius: 12,
-    backgroundColor: "#20232a",
+    backgroundColor: COLORS.secondaryColor,
   },
   inputCategory: {
     marginHorizontal: Config.deviceWidth * 0.01,
@@ -461,7 +461,7 @@ const styles = StyleSheet.create({
     fontFamily: "assistant-regular",
     fontSize: Config.deviceWidth > 350 ? 20 : 18,
     textAlign: "center",
-    color: "white",
+    color: COLORS.white,
     // alignSelf: 'flex-start'
   },
   ionicon: {
@@ -470,7 +470,7 @@ const styles = StyleSheet.create({
   textIonicon: {
     fontFamily: "assistant-regular",
     fontSize: Config.deviceWidth > 350 ? 14 : 13,
-    color: "white",
+    color: COLORS.white,
     marginTop: Config.deviceHeight > 600 ? -4 : -3,
     fontStyle: "italic",
   },
@@ -479,12 +479,12 @@ const styles = StyleSheet.create({
   },
   input: {
     fontFamily: "assistant-regular",
-    borderColor: "#D1D1D1",
+    borderColor: COLORS.shadow,
     borderWidth: 1.5,
     borderRadius: 3,
     padding: Config.deviceHeight > 600 ? 2 : 1.8,
     textAlign: "center",
-    backgroundColor: "white",
+    backgroundColor: COLORS.white,
     width: Config.deviceWidth / 2.1,
   },
   sliderText: {
@@ -492,7 +492,7 @@ const styles = StyleSheet.create({
     fontSize: Config.deviceHeight > 600 ? 18 : 16,
     textAlign: "center",
     marginTop: -7.5,
-    color: "white",
+    color: COLORS.white,
   },
   actionContainer: {
     marginTop: Config.deviceHeight * 0.02,
@@ -500,13 +500,13 @@ const styles = StyleSheet.create({
   buttonContainer: {
     width: Config.deviceWidth * 0.25,
     paddingVertical: Config.deviceWidth * 0.04,
-    backgroundColor: Colors.darkGray,
+    backgroundColor: COLORS.secondaryColor,
     borderRadius: 20,
     margin: 12,
   },
   buttonText: {
     textAlign: "center",
-    color: Colors.white,
+    color: COLORS.white,
     fontFamily: "assistant-bold",
     fontSize: Config.deviceHeight > 600 ? 24 : 22,
     fontSize: 30,
@@ -522,16 +522,16 @@ const styles = StyleSheet.create({
   },
   listContainer: {
     borderTopWidth: 2,
-    borderColor: Colors.darkGray,
+    borderColor: COLORS.secondaryColor,
   },
   list: {
     borderBottomWidth: 2,
     borderRadius: 0,
-    borderColor: Colors.darkGray,
+    borderColor: COLORS.secondaryColor,
     width: Config.deviceWidth,
     flexDirection: "row",
     paddingVertical: Config.deviceHeight * 0.003,
-    backgroundColor: "#D1D1D1",
+    backgroundColor: COLORS.shadow,
   },
   // textBox: {
   //   flex: 1,
@@ -543,7 +543,7 @@ const styles = StyleSheet.create({
     fontFamily: "assistant-regular",
     fontSize: 16,
     paddingVertical: Config.deviceHeight * 0.007,
-    backgroundColor: "white",
+    backgroundColor: COLORS.white,
     alignSelf: "flex-start",
     // color: '#ec3a05'
   },

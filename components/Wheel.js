@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { StyleSheet, View, Modal, TouchableOpacity } from "react-native";
 
-import colors from "../constants/colors";
+import COLORS from "../constants/colors";
 import Config from "../components/Config";
 import WheelOfFortune from "./WheelOfFortune";
 
@@ -59,15 +59,7 @@ class Wheel extends Component {
         animationType={"fade"}
         transparent={true}
       >
-        <View
-          style={{
-            flex: 1,
-            alignSelf: "center",
-            maxWidth: "90%",
-            maxHeight: "90%",
-            paddingBottom: Config.deviceHeight * 0.28,
-          }}
-        >
+        <View style={styles.container}>
           <WheelOfFortune
             onRef={(ref) => (this.child = ref)}
             rewards={rewards}
@@ -80,13 +72,12 @@ class Wheel extends Component {
               )
             }
             borderWidth={12}
-            borderColor={"#000000"}
+            borderColor={COLORS.black}
             knobSize={40}
             duration={2000}
             innerRadius={1}
-            colors={["#000000", "#f1c232"]}
-            backgroundColor={"#f1c232"}
-            //textAngle={"vertical"}
+            colors={[COLORS.black, COLORS.primaryColor]}
+            backgroundColor={COLORS.primaryColor}
           />
         </View>
       </Modal>
@@ -97,9 +88,15 @@ class Wheel extends Component {
 export default Wheel;
 
 const styles = StyleSheet.create({
-  tapToStart: {
-    fontSize: 50,
-    color: "#fff",
-    fontWeight: "bold",
+  container: {
+    alignSelf: "center",
+    maxWidth: "90%",
+    maxHeight: "90%",
+    paddingBottom: Config.deviceHeight * 0.28,
   },
+  // tapToStart: {
+  //   fontSize: 50,
+  //   color: COLORS.white,
+  //   fontFamily: "assistant-bold",
+  // },
 });
