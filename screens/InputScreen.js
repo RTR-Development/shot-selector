@@ -225,6 +225,7 @@ const InputScreen = (props) => {
     }
   };
 
+  //Change wheel status switch in SQLite database and Context database
   const handleSwitchAction = async (context) => {
     try {
       if (context.savedWheel[0].active == 1) {
@@ -448,8 +449,6 @@ const styles = StyleSheet.create({
   inputContainer: {
     marginTop: Config.deviceHeight * 0.01,
     flexDirection: "row",
-    // borderWidth: 2,
-    // borderColor: "#D1D1D1",
     padding: Config.deviceHeight > 700 ? 7 : 5,
     borderRadius: 12,
     backgroundColor: COLORS.secondaryColor,
@@ -462,7 +461,6 @@ const styles = StyleSheet.create({
     fontSize: Config.deviceWidth > 350 ? 20 : 18,
     textAlign: "center",
     color: COLORS.white,
-    // alignSelf: 'flex-start'
   },
   ionicon: {
     textAlign: "center",
@@ -533,10 +531,6 @@ const styles = StyleSheet.create({
     paddingVertical: Config.deviceHeight * 0.003,
     backgroundColor: COLORS.shadow,
   },
-  // textBox: {
-  //   flex: 1,
-  //   backgroundColor: '#fff'
-  // },
   listText: {
     flex: 1,
     textAlign: "center",
@@ -545,7 +539,6 @@ const styles = StyleSheet.create({
     paddingVertical: Config.deviceHeight * 0.007,
     backgroundColor: COLORS.white,
     alignSelf: "flex-start",
-    // color: '#ec3a05'
   },
 });
 

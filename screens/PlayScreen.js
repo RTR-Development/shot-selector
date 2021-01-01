@@ -43,17 +43,12 @@ const PlayScreen = (props) => {
   const [selectedImage, setSelectedImage] = useState();
   const [count, setCount] = useState(0);
 
+  //Save shot statistic background colors
   const [countColor, setCountColor] = useState("rgb(33,33,33)");
   const [alcColor, setAlcColor] = useState("rgb(33,33,33)");
   const [chanceColor, setChanceColor] = useState("rgb(33,33,33)");
 
   let wheelRef = React.createRef();
-  const onShowWheelRef = () => {
-    wheelRef.show();
-  };
-  const onCloseWheelRef = () => {
-    wheelRef.close();
-  };
 
   // Set the count of all ocurrences summed up to 0 when screen is activated
   let countOcc = 0;
@@ -82,7 +77,7 @@ const PlayScreen = (props) => {
         setDrinkChance(((element.occ / countOcc) * 100).toFixed(0));
         setSelectedImage(element.imageUri);
         setCount(count + 1);
-        if (context.savedWheel[0].active && Math.random() < 0.1) {
+        if (context.savedWheel[0].active && Math.random() < 0.2) {
           wheelRef.show();
         }
         break;
@@ -108,12 +103,17 @@ const PlayScreen = (props) => {
     return "rgb(" + red + "," + green + "," + blue + ")";
   };
 
+  //This will change the alc background color from yellow to red
+  // depending on the alc percentage
   const transitionAlcColor = () => {
     let red = String(255);
     let green = String(200 - drinkABV * 2.0);
     let blue = String(0);
     return "rgb(" + red + "," + green + "," + blue + ")";
   };
+
+  //This will increase the green color of the chance background
+  // by increasing the rgb from darkgreen to green
   const transitionChanceColor = () => {
     let red = String(0);
     let green = String(100 + drinkChance * 2.55);
