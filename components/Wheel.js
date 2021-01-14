@@ -6,7 +6,7 @@ import Config from "../components/Config";
 import WheelOfFortune from "./WheelOfFortune";
 
 let rewards = [];
-const allRewards = ["2x", "1x", "New shot", "No shot", "Hand out"];
+const allRewards = ["2x", "1x", "Share 2!", "New Shot!", "No Shot!", "Hand out"];
 const numOfRewards = [4, 6, 8];
 
 class Wheel extends Component {
@@ -74,9 +74,9 @@ class Wheel extends Component {
             borderWidth={12}
             borderColor={COLORS.black}
             knobSize={40}
-            duration={2000}
-            innerRadius={1}
-            colors={[COLORS.black, COLORS.primaryColor]}
+            duration={5000}
+            innerRadius={10}
+            colors={[COLORS.red, COLORS.primaryColor]}
             backgroundColor={COLORS.primaryColor}
           />
         </View>

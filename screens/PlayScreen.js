@@ -79,7 +79,7 @@ const PlayScreen = (props) => {
         setDrinkChance(((element.occ / countOcc) * 100).toFixed(0));
         setSelectedImage(element.imageUri);
         setCount(count + 1);
-        if (context.savedWheel[0].active && Math.random() < 0.2) {
+        if (context.savedWheel[0].active && Math.random() < 0.5) {
           wheelRef.show();
         }
         break;
@@ -269,7 +269,7 @@ const PlayScreen = (props) => {
                   activeOpacity={0.7}
                 >
                   <View style={styles.buttonContainer}>
-                    <Text style={styles.buttonText}>SHOT</Text>
+                    <Text style={styles.buttonText}>SHOT!</Text>
                   </View>
                 </TouchableOpacity>
               </View>
