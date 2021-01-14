@@ -5,4 +5,6 @@ export default {
   white: "#fff",
   black: "#000",
   red: "#FF3E02",
+  green: "rgb(129, 204, 100)",
+  yellow: "rgb(50, 100, 85)",
 };

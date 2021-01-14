@@ -44,7 +44,7 @@ class Wheel extends Component {
       this.state.winnerValue === "1x" ||
       this.state.winnerValue === "Hand out"
     ) {
-      shotSetter(this.state.winnerValue + " " + shotName);
+      shotSetter(shotName + " " + this.state.winnerValue);
     } else {
       shotSetter(this.state.winnerValue);
     }
@@ -75,9 +75,9 @@ class Wheel extends Component {
             borderColor={COLORS.black}
             knobSize={40}
             duration={5000}
-            innerRadius={10}
-            colors={[COLORS.red, COLORS.primaryColor]}
-            backgroundColor={COLORS.primaryColor}
+            innerRadius={20}
+            colors={[COLORS.primaryColor, COLORS.red]}
+            backgroundColor={COLORS.black}
           />
         </View>
       </Modal>
