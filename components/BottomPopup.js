@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import {
   Modal,
   Dimensions,
@@ -14,11 +14,11 @@ import * as ImagePicker from "expo-image-picker";
 import * as Permissions from "expo-permissions";
 import { Ionicons } from "@expo/vector-icons";
 
-import colors from "../constants/colors";
+import COLORS from "../constants/colors";
 
 const deviceHeight = Dimensions.get("window").height;
 
-export class BottomPopup extends React.Component {
+class BottomPopup extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -86,7 +86,7 @@ export class BottomPopup extends React.Component {
   };
 
   renderOutsideTouchable(onTouch) {
-    const view = <View style={styles.container} />;
+    const view = <View style={styles.outsideContainer} />;
     if (!onTouch) return view;
     return (
       <TouchableWithoutFeedback onPress={onTouch} style={styles.container}>
@@ -95,8 +95,7 @@ export class BottomPopup extends React.Component {
     );
   }
 
-  renderTitle = () => {
-    const title = this.props.title;
+  renderTitle = (title) => {
     return (
       <View style={{ alignItems: "center" }}>
         <Text style={styles.titleText}>{title}</Text>
@@ -104,12 +103,10 @@ export class BottomPopup extends React.Component {
     );
   };
 
-  renderContent = () => {
-    const data = this.props.data;
+  renderContent = (data) => {
     return (
       <View>
         <FlatList
-          style={{ marginBottom: 15 }}
           showsVerticalScrollIndicator={false}
           data={data}
           renderItem={this.renderItem}
@@ -129,7 +126,11 @@ export class BottomPopup extends React.Component {
           <TouchableOpacity onPress={this.takeImageHandler} activeOpacity={0.7}>
             <View style={styles.itemContainer}>
               <Text style={styles.itemText}>{item.name}</Text>
-              <Ionicons name="ios-camera" size={34} color="#182E44" />
+              <Ionicons
+                name="ios-camera"
+                size={34}
+                color={COLORS.secondaryColor}
+              />
             </View>
           </TouchableOpacity>
         </View>
@@ -140,7 +141,11 @@ export class BottomPopup extends React.Component {
           <TouchableOpacity onPress={this.useImageRoll} activeOpacity={0.7}>
             <View style={styles.itemContainer}>
               <Text style={styles.itemText}>{item.name}</Text>
-              <Ionicons name="ios-images" size={34} color="#182E44" />
+              <Ionicons
+                name="ios-images"
+                size={34}
+                color={COLORS.secondaryColor}
+              />
             </View>
           </TouchableOpacity>
         </View>
@@ -161,13 +166,11 @@ export class BottomPopup extends React.Component {
     }
   };
 
-  renderSeparator = () => (
-    <View style={{ opacity: 0.1, backgroundColor: "#182E44", height: 1 }} />
-  );
+  renderSeparator = () => <View style={styles.separator} />;
 
   render() {
     let { show } = this.state;
-    const { onTouchOutside, title } = this.props;
+    const { onTouchOutside, title, data } = this.props;
     return (
       <Modal
         animationType={"fade"}
@@ -175,17 +178,11 @@ export class BottomPopup extends React.Component {
         visible={show}
         onRequestClose={this.close}
       >
-        <View
-          style={{
-            flex: 1,
-            backgroundColor: "#000000AA",
-            justifyContent: "flex-end",
-          }}
-        >
+        <View style={styles.container}>
           {this.renderOutsideTouchable(onTouchOutside)}
           <View style={styles.popupContainer}>
-            {this.renderTitle()}
-            {this.renderContent()}
+            {this.renderTitle(title)}
+            {this.renderContent(data)}
           </View>
         </View>
       </Modal>
@@ -193,21 +190,32 @@ export class BottomPopup extends React.Component {
   }
 }
 
+export default BottomPopup;
+
 const styles = StyleSheet.create({
+  outsideContainer: {
+    flex: 1,
+  },
   container: {
     flex: 1,
-    width: "100%",
+    backgroundColor: "#000000AA",
+    justifyContent: "flex-end",
   },
   popupContainer: {
-    backgroundColor: colors.white,
+    backgroundColor: COLORS.white,
     width: "100%",
     borderTopRightRadius: 10,
     borderTopLeftRadius: 10,
     paddingHorizontal: 10,
     maxHeight: deviceHeight * 0.4,
   },
+  separator: {
+    opacity: 0.2,
+    backgroundColor: COLORS.black,
+    height: 1,
+  },
   titleText: {
-    color: "#182E44",
+    color: COLORS.secondaryColor,
     fontSize: 25,
     marginTop: 15,
     marginBottom: 30,
@@ -223,6 +231,6 @@ const styles = StyleSheet.create({
     marginLeft: 7,
     marginRight: 7,
     fontSize: 20,
-    color: "#182E44",
+    color: COLORS.secondaryColor,
   },
 });

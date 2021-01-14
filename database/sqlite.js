@@ -2,12 +2,31 @@ import * as SQLite from "expo-sqlite";
 
 const db = SQLite.openDatabase("shots.db");
 
-//Initialize database
-export const init = () => {
+//Initialize shot table
+export const initShot = () => {
   const promise = new Promise((resolve, reject) => {
     db.transaction((tx) => {
       tx.executeSql(
-        "CREATE TABLE IF NOT EXISTS shots (id INTEGER PRIMARY KEY NOT NULL, name TEXT NOT NULL, abv REAL, occ INTEGER NOT NULL, imageUri TEXT );",
+        "CREATE TABLE IF NOT EXISTS shots (id INTEGER PRIMARY KEY NOT NULL, name TEXT NOT NULL, abv REAL, occ INTEGER NOT NULL, imageUri TEXT);",
+        [],
+        () => {
+          resolve();
+        },
+        (_, err) => {
+          reject(err);
+        }
+      );
+    });
+  });
+  return promise;
+};
+
+//Initialize wheel table
+export const initWheel = () => {
+  const promise = new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        "CREATE TABLE IF NOT EXISTS wheel (active INTEGER NOT NULL);",
         [],
         () => {
           resolve();
@@ -28,6 +47,25 @@ export const insertShot = (name, abv, occ, imageUri) => {
       tx.executeSql(
         "INSERT INTO shots (name, abv, occ, imageUri) VALUES (?, ?, ?, ?);",
         [name, abv, occ, imageUri],
+        (_, result) => {
+          resolve(result);
+        },
+        (_, err) => {
+          reject(err);
+        }
+      );
+    });
+  });
+  return promise;
+};
+
+//Insert wheel status into database
+export const insertWheel = (active) => {
+  const promise = new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        "INSERT INTO wheel (active) VALUES (?);",
+        [active],
         (_, result) => {
           resolve(result);
         },
@@ -66,6 +104,44 @@ export const fetchShots = () => {
       tx.executeSql(
         "SELECT * FROM shots",
         [],
+        (_, result) => {
+          resolve(result);
+        },
+        (_, err) => {
+          reject(err);
+        }
+      );
+    });
+  });
+  return promise;
+};
+
+//Get wheel status from database
+export const fetchWheel = () => {
+  const promise = new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        "SELECT * FROM wheel",
+        [],
+        (_, result) => {
+          resolve(result);
+        },
+        (_, err) => {
+          reject(err);
+        }
+      );
+    });
+  });
+  return promise;
+};
+
+//Update wheel status of database
+export const updateWheel = (active) => {
+  const promise = new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        "UPDATE wheel SET active = ?",
+        [active],
         (_, result) => {
           resolve(result);
         },

@@ -10,9 +10,10 @@ import {
 
 import { Ionicons } from "@expo/vector-icons";
 
-import Colors from "../constants/colors";
+import COLORS from "../constants/colors";
 import DrinksContext from "../context/drinks-context";
 import Config from "../components/Config";
+import Wheel from "../components/Wheel";
 
 //Hello this is Rick, I hope you can see this comment in the Git
 
@@ -44,9 +45,12 @@ const PlayScreen = (props) => {
   const [selectedImage, setSelectedImage] = useState();
   const [count, setCount] = useState(0);
 
+  //Save shot statistic background colors
   const [countColor, setCountColor] = useState("rgb(33,33,33)");
   const [alcColor, setAlcColor] = useState("rgb(33,33,33)");
   const [chanceColor, setChanceColor] = useState("rgb(33,33,33)");
+
+  let wheelRef = React.createRef();
 
   // Set the count of all ocurrences summed up to 0 when screen is activated
   let countOcc = 0;
@@ -75,6 +79,9 @@ const PlayScreen = (props) => {
         setDrinkChance(((element.occ / countOcc) * 100).toFixed(0));
         setSelectedImage(element.imageUri);
         setCount(count + 1);
+        if (context.savedWheel[0].active && Math.random() < 0.2) {
+          wheelRef.show();
+        }
         break;
       }
     }
@@ -98,12 +105,17 @@ const PlayScreen = (props) => {
     return "rgb(" + red + "," + green + "," + blue + ")";
   };
 
+  //This will change the alc background color from yellow to red
+  // depending on the alc percentage
   const transitionAlcColor = () => {
     let red = String(255);
     let green = String(200 - drinkABV * 2.0);
     let blue = String(0);
     return "rgb(" + red + "," + green + "," + blue + ")";
   };
+
+  //This will increase the green color of the chance background
+  // by increasing the rgb from darkgreen to green
   const transitionChanceColor = () => {
     let red = String(0);
     let green = String(100 + drinkChance * 2.55);
@@ -163,7 +175,7 @@ const PlayScreen = (props) => {
                     <Ionicons
                       name="md-arrow-round-back"
                       size={22}
-                      color="black"
+                      color={COLORS.black}
                     />
                     <Text
                       style={{
@@ -190,7 +202,11 @@ const PlayScreen = (props) => {
                     >
                       press{" "}
                     </Text>
-                    <Ionicons name="md-finger-print" size={22} color="black" />
+                    <Ionicons
+                      name="md-finger-print"
+                      size={22}
+                      color={COLORS.black}
+                    />
                     <Text
                       style={{
                         textAlign: "center",
@@ -217,6 +233,12 @@ const PlayScreen = (props) => {
                   <Image source={{ uri: selectedImage }} style={styles.image} />
                 )}
               </View>
+              <Wheel
+                ref={(target) => (wheelRef = target)}
+                close={() => props.onChangeScreen("StartScreen")}
+                shotName={drinkName}
+                shotSetter={setDrinkName}
+              />
               <View
                 style={{
                   flex: 1,
@@ -341,13 +363,13 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     alignSelf: "center",
-    backgroundColor: Colors.darkGray,
+    backgroundColor: COLORS.secondaryColor,
     width: Config.deviceWidth * 0.6,
     borderRadius: 30,
     paddingVertical: Config.deviceHeight > 600 ? 20 : 18,
   },
   buttonText: {
-    color: Colors.white,
+    color: COLORS.white,
     fontFamily: "assistant-bold",
     textAlign: "center",
     fontSize: Config.deviceHeight > 600 ? 50 : 46,
@@ -369,9 +391,9 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontFamily: "assistant-bold",
     fontSize: Config.deviceHeight > 600 ? 40 : 36,
-    color: "white",
+    color: COLORS.white,
     borderWidth: 1,
-    backgroundColor: Colors.darkGray,
+    backgroundColor: COLORS.secondaryColor,
   },
 });
 
