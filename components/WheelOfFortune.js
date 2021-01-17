@@ -7,6 +7,7 @@ import {
   Animated,
   TouchableOpacity,
   Image as RNImage,
+  Vibration,
 } from "react-native";
 import * as d3Shape from "d3-shape";
 
@@ -113,6 +114,10 @@ class WheelOfFortune extends Component {
 
   _onPress = () => {
     const duration = this.props.duration || 10000;
+
+    // wait 400ms, vibrate 400ms
+    // Repeat difficult to implement
+    Vibration.vibrate([300, 400, 600, 400, 600, 400, 600, 400, 600, 400]);
 
     this.setState({
       started: true,
