@@ -12,6 +12,7 @@ import {
 import * as d3Shape from "d3-shape";
 
 import Svg, { G, Text, TSpan, Path } from "react-native-svg";
+import { Audio } from "expo-av";
 
 const AnimatedSvg = Animated.createAnimatedComponent(Svg);
 
@@ -112,12 +113,18 @@ class WheelOfFortune extends Component {
     );
   };
 
-  _onPress = () => {
+  _onPress = async () => {
     const duration = this.props.duration || 10000;
 
     // wait 400ms, vibrate 400ms
     // Repeat difficult to implement
     Vibration.vibrate([300, 400, 600, 400, 600, 400, 600, 400, 600, 400]);
+
+    const { sound } = await Audio.Sound.createAsync(
+      require("../assets/sounds/wheel_spinning.mp3")
+    );
+
+    await sound.playAsync();
 
     this.setState({
       started: true,

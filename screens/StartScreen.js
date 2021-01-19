@@ -8,7 +8,9 @@ import {
   Alert,
   Linking,
 } from "react-native";
+
 import { Ionicons } from "@expo/vector-icons";
+import { Audio } from "expo-av";
 
 import Config from "../components/Config";
 import COLORS from "../constants/colors";
@@ -16,6 +18,7 @@ import COLORS from "../constants/colors";
 const StartScreen = (props) => {
   //Open link to privacy statement
   privacyHandler = async () => {
+    await playSound();
     Alert.alert(
       "Privacy Statement",
       "Do you want to open our privacy statement in a webbrowser?",
@@ -38,9 +41,27 @@ const StartScreen = (props) => {
 
   //Go to store page for user to like the app
   likeHandler = async () => {
-    Linking.openURL(
-      "http://play.google.com/store/apps/details?id=com.rtrdevelopment.shot_selector"
-    ).catch((err) => console.error("Couldn't load page", err));
+    await playSound();
+    setTimeout(
+      () =>
+        Linking.openURL(
+          "http://play.google.com/store/apps/details?id=com.rtrdevelopment.shot_selector"
+        ).catch((err) => console.error("Couldn't load page", err)),
+      400
+    );
+  };
+
+  playSound = async () => {
+    const { sound } = await Audio.Sound.createAsync(
+      require("../assets/sounds/menu.mp3")
+    );
+
+    await sound.playAsync();
+  };
+
+  changeScreen = async (screen) => {
+    await playSound();
+    props.onChangeScreen(screen);
   };
 
   return (
@@ -53,7 +74,7 @@ const StartScreen = (props) => {
       </View>
       <View style={styles.buttonList}>
         <TouchableOpacity
-          onPress={() => props.onChangeScreen("PlayScreen")}
+          onPress={() => changeScreen("PlayScreen")}
           activeOpacity={0.7}
         >
           <View style={styles.buttonContainer}>
@@ -61,7 +82,7 @@ const StartScreen = (props) => {
           </View>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => props.onChangeScreen("InputScreen")}
+          onPress={() => changeScreen("InputScreen")}
           activeOpacity={0.7}
         >
           <View style={styles.buttonContainer}>

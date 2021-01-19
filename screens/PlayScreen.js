@@ -9,6 +9,7 @@ import {
 } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";
+import { Audio } from "expo-av";
 
 import COLORS from "../constants/colors";
 import DrinksContext from "../context/drinks-context";
@@ -55,8 +56,18 @@ const PlayScreen = (props) => {
   // Set the count of all ocurrences summed up to 0 when screen is activated
   let countOcc = 0;
 
+  playSound = async () => {
+    const { sound } = await Audio.Sound.createAsync(
+      require("../assets/sounds/pling.mp3")
+    );
+
+    await sound.playAsync();
+  };
+
   //Choose randomly a shot out of the Context database
   const chooseDrink = (context) => {
+    playSound();
+
     //Check if count of all ocurences already has been calculated
     if (countOcc === 0) {
       //Sum up all occurences of all shots in the Context database
