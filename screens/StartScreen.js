@@ -47,7 +47,7 @@ const StartScreen = (props) => {
         Linking.openURL(
           "http://play.google.com/store/apps/details?id=com.rtrdevelopment.shot_selector"
         ).catch((err) => console.error("Couldn't load page", err)),
-      400
+      300
     );
   };
 

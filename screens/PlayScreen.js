@@ -58,7 +58,7 @@ const PlayScreen = (props) => {
 
   playSound = async () => {
     const { sound } = await Audio.Sound.createAsync(
-      require("../assets/sounds/pling.mp3")
+      require("../assets/sounds/menu.mp3")
     );
 
     await sound.playAsync();

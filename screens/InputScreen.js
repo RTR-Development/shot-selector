@@ -15,6 +15,7 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import * as FileSystem from "expo-file-system";
 import Slider from "@react-native-community/slider";
+import { Audio } from "expo-av";
 
 import Config from "../components/Config";
 import COLORS from "../constants/colors";
@@ -65,7 +66,8 @@ const InputScreen = (props) => {
   //onShowPopup makes BottomPopup visible on screen
   //onClosePopup makes BottomPopup invisible on screen
   let popupRef = React.createRef();
-  const onShowPopup = () => {
+  const onShowPopup = async () => {
+    await playSound("menu");
     popupRef.show();
   };
   const onClosePopup = () => {
@@ -78,6 +80,7 @@ const InputScreen = (props) => {
 
   //Add filled in shot into SQLite database and Context database
   const handleAddAction = async (context) => {
+    await playSound("menu");
     //Check if a shot name has been added
     if (!drinkName) {
       Alert.alert(
@@ -139,6 +142,7 @@ const InputScreen = (props) => {
   };
 
   const handleDefaultAction = async (context) => {
+    await playSound("menu");
     var defaultDrinks = ["Bier", "Vodka", "Bacardi"];
     var defaultABV = [5, 35, 30];
 
@@ -213,6 +217,7 @@ const InputScreen = (props) => {
 
   //Delete selected shot out of SQLite database and Context database
   const handleDeleteAction = async (context, id) => {
+    await playSound("break_glass");
     try {
       const dbResult = await deleteShot(id);
       context.setSavedDrinks(
@@ -227,6 +232,7 @@ const InputScreen = (props) => {
 
   //Change wheel status switch in SQLite database and Context database
   const handleSwitchAction = async (context) => {
+    await playSound("menu");
     try {
       if (context.savedWheel[0].active == 1) {
         const dbResult = await updateWheel(0);
@@ -238,6 +244,22 @@ const InputScreen = (props) => {
     } catch (err) {
       console.log("Failed to change wheel status");
       console.log(err);
+    }
+  };
+
+  playSound = async (song) => {
+    if (song == "menu") {
+      const { sound } = await Audio.Sound.createAsync(
+        require("../assets/sounds/menu.mp3")
+      );
+      await sound.playAsync();
+    } else if (song == "break_glass") {
+      const { sound } = await Audio.Sound.createAsync(
+        require("../assets/sounds/break_glass.mp3")
+      );
+      await sound.playAsync();
+    } else {
+      console.log("Requested sound not found");
     }
   };
 
