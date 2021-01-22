@@ -11,6 +11,7 @@ import {
 
 import { Ionicons } from "@expo/vector-icons";
 import { Audio } from "expo-av";
+import * as Permissions from "expo-permissions";
 
 import Config from "../components/Config";
 import COLORS from "../constants/colors";
@@ -51,6 +52,20 @@ const StartScreen = (props) => {
     );
   };
 
+  //Ask for VIBRATION permission
+  verifyPermissions = async () => {
+    const result = await Permissions.askAsync(Permissions.MOTION);
+    if (result.status !== "granted") {
+      Alert.alert(
+        "Insufficient permissions granted!",
+        "Please give the app permission to use motion features",
+        [{ text: "Okay" }]
+      );
+      return false;
+    }
+    return true;
+  };
+
   playSound = async () => {
     const { sound } = await Audio.Sound.createAsync(
       require("../assets/sounds/menu.mp3")
@@ -61,6 +76,13 @@ const StartScreen = (props) => {
 
   changeScreen = async (screen) => {
     await playSound();
+    console.log(screen);
+    if (screen == "PlayScreen") {
+      const hasPermission = await verifyPermissions();
+      if (!hasPermission) {
+        return;
+      }
+    }
     props.onChangeScreen(screen);
   };
 

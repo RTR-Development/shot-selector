@@ -32,7 +32,7 @@
         "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#f1c232"
       },
-      "permissions": ["CAMERA", "WRITE_EXTERNAL_STORAGE"]
+      "permissions": ["CAMERA", "WRITE_EXTERNAL_STORAGE", "VIBRATE"]
     }
   }
 }
