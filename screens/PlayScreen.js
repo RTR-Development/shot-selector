@@ -16,6 +16,7 @@ import DrinksContext from "../context/drinks-context";
 import Config from "../components/Config";
 import Wheel from "../components/Wheel";
 
+
 //Hello this is Rick, I hope you can see this comment in the Git
 
 //Random num generator
@@ -88,6 +89,7 @@ const PlayScreen = (props) => {
         setDrinkName(element.name);
         setDrinkABV(element.abv);
         setDrinkChance(((element.occ / countOcc) * 100).toFixed(0));
+        console.log(element.imageUri)
         setSelectedImage(element.imageUri);
         setCount(count + 1);
         if (context.savedWheel[0].active && Math.random() < 0.5) {
@@ -235,14 +237,38 @@ const PlayScreen = (props) => {
           ) : (
             <View>
               <View style={styles.imageContainer}>
-                {!selectedImage ? (
+              {!selectedImage ? (
                   <Image
                     source={require("../assets/images/shot_selector_logo.png")}
                     style={styles.image}
                   />
                 ) : (
-                  <Image source={{ uri: selectedImage }} style={styles.image} />
-                )}
+                  (selectedImage == "Bier" ? (
+                    <Image
+                      source={require("../assets/images/shot_selector_logo.png")}
+                      style={styles.image}
+                    />
+                  ) : (
+                    (selectedImage == "Vodka" ? (
+                      <Image
+                        source={require("../assets/images/icon_shot.png")}
+                        style={styles.image}
+                      />
+                    ) : (
+                      (selectedImage == "Bacardi" ? (
+                        <Image
+                          source={require("../assets/images/knoob.png")}
+                          style={styles.image}
+                        />
+                    ) :
+                    (
+                    <Image
+                      source={{ uri: selectedImage }}
+                      style={styles.image}
+                    />
+                  ))))))
+                )
+              }
               </View>
               <Wheel
                 ref={(target) => (wheelRef = target)}

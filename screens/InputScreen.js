@@ -99,7 +99,6 @@ const InputScreen = (props) => {
       let newPath = "";
       if (selectedImage) {
         newPath = FileSystem.documentDirectory + selectedImage.split("/").pop();
-
         try {
           await FileSystem.moveAsync({
             from: selectedImage,
@@ -145,6 +144,10 @@ const InputScreen = (props) => {
     await playSound("menu");
     var defaultDrinks = ["Bier", "Vodka", "Bacardi"];
     var defaultABV = [5, 35, 30];
+    //source={require("../assets/images/shot_selector_logo.png")}
+    var defaultPictures = [
+      "Bier", "Vodka", "Bacardi"
+    ];
 
     var magic = Math.floor(Math.random() * defaultDrinks.length);
 
@@ -153,8 +156,11 @@ const InputScreen = (props) => {
 
     var randomABV = defaultABV[magic];
     let drinkABV = randomABV;
+
+    var randomPicture = defaultPictures[magic];
+    let drinkPicture = randomPicture;
+
     let drinkOccurence = 1;
-    let newPath = "";
 
     if (!drinkName) {
       Alert.alert(
@@ -170,25 +176,17 @@ const InputScreen = (props) => {
         [{ text: "OK" }]
       );
     } else {
-      let newPath = "";
-      if (selectedImage) {
-        newPath = FileSystem.documentDirectory + selectedImage.split("/").pop();
+      let newPath = "../assets/splashtwo.png";
 
-        try {
-          await FileSystem.moveAsync({
-            from: selectedImage,
-            to: newPath,
-          });
-        } catch (err) {
-          console.log(err);
-        }
+      if (drinkPicture) {
+        newPath = FileSystem.documentDirectory + drinkPicture.split("/").pop();
       }
       try {
         const dbResult = await insertShot(
           drinkName,
           drinkABV,
           parseInt(drinkOccurence),
-          newPath
+          drinkPicture
         );
         console.log(dbResult);
         context.setSavedDrinks((curSavedDrinks) => [
@@ -197,7 +195,7 @@ const InputScreen = (props) => {
             name: drinkName,
             abv: drinkABV,
             occ: parseInt(drinkOccurence),
-            imageUri: newPath,
+            imageUri: drinkPicture,
           },
           ...curSavedDrinks,
         ]);

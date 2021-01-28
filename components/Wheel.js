@@ -44,7 +44,7 @@ class Wheel extends Component {
       this.state.winnerValue === "1x" ||
       this.state.winnerValue === "Hand out"
     ) {
-      shotSetter(shotName + " " + this.state.winnerValue);
+      shotSetter(this.state.winnerValue + " " + shotName);
     } else {
       shotSetter(this.state.winnerValue);
     }
