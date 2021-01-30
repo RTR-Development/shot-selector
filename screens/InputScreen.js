@@ -142,74 +142,44 @@ const InputScreen = (props) => {
 
   const handleDefaultAction = async (context) => {
     await playSound("menu");
-    var defaultDrinks = ["Bier", "Vodka", "Bacardi"];
-    var defaultABV = [5, 35, 30];
-    //source={require("../assets/images/shot_selector_logo.png")}
-    var defaultPictures = [
-      "Bier", "Vodka", "Bacardi"
-    ];
 
-    var magic = Math.floor(Math.random() * defaultDrinks.length);
+    // Create default options
+    const defaultDrinks = ["Bier", "Vodka", "Bacardi"];
+    const defaultABV = [5, 35, 30];
+    const defaultPictures = ["Bier", "Vodka", "Bacardi"];
 
-    var randomItem = defaultDrinks[magic];
-    let drinkName = randomItem;
+    // Select random number
+    const magic = Math.floor(Math.random() * defaultDrinks.length);
 
-    var randomABV = defaultABV[magic];
-    let drinkABV = randomABV;
-
-    var randomPicture = defaultPictures[magic];
-    let drinkPicture = randomPicture;
-
+    // Select shots from options according to random number
+    let drinkName = defaultDrinks[magic];
+    let drinkABV = defaultABV[magic];
     let drinkOccurence = 1;
+    let drinkPicture = defaultPictures[magic];
 
-    if (!drinkName) {
-      Alert.alert(
-        "No name specified",
-        "Please enter a name of the shot or drink",
-        [{ text: "OK" }]
+    // Insert into databases
+    try {
+      const dbResult = await insertShot(
+        drinkName,
+        drinkABV,
+        drinkOccurence,
+        drinkPicture
       );
-      //Check if a shot occurence has been added
-    } else if (!Number.isInteger(parseInt(drinkABV))) {
-      Alert.alert(
-        "No correct ALC specified",
-        "Please enter an alcohol percentage between 0% and 100%",
-        [{ text: "OK" }]
-      );
-    } else {
-      let newPath = "../assets/splashtwo.png";
-
-      if (drinkPicture) {
-        newPath = FileSystem.documentDirectory + drinkPicture.split("/").pop();
-      }
-      try {
-        const dbResult = await insertShot(
-          drinkName,
-          drinkABV,
-          parseInt(drinkOccurence),
-          drinkPicture
-        );
-        console.log(dbResult);
-        context.setSavedDrinks((curSavedDrinks) => [
-          {
-            id: dbResult.insertId,
-            name: drinkName,
-            abv: drinkABV,
-            occ: parseInt(drinkOccurence),
-            imageUri: drinkPicture,
-          },
-          ...curSavedDrinks,
-        ]);
-        console.log("Data successfully added to database");
-      } catch (err) {
-        console.log("Failed to add data to database");
-        console.log(err);
-      }
-      //Clear all textinputs and image selector
-      setSelectedImage(null);
-      this.nameInput.clear();
-      this.abvInput.clear();
-      setDrinkOccurence(1);
-      this.occInput.setNativeProps({ value: 1 });
+      console.log(dbResult);
+      context.setSavedDrinks((curSavedDrinks) => [
+        {
+          id: dbResult.insertId,
+          name: drinkName,
+          abv: drinkABV,
+          occ: parseInt(drinkOccurence),
+          imageUri: drinkPicture,
+        },
+        ...curSavedDrinks,
+      ]);
+      console.log("Data successfully added to database");
+    } catch (err) {
+      console.log("Failed to add data to database");
+      console.log(err);
     }
   };
 
