@@ -94,9 +94,9 @@ const PlayScreen = (props) => {
         setDrinkABV(element.abv);
         setDrinkChance(((element.occ / countOcc) * 100).toFixed(0));
         setSelectedImageUri(element.imageUri);
-        setSelectedImageInt(element.image);
+        setSelectedImageInt(element.imageInt);
         setCount(count + 1);
-        if (context.savedWheel[0].active && Math.random() < 0.5) {
+        if (context.savedWheel && Math.random() < 0.5) {
           wheelRef.show();
         }
         break;
@@ -216,6 +216,7 @@ const PlayScreen = (props) => {
                 close={() => props.onChangeScreen("StartScreen")}
                 shotName={drinkName}
                 shotSetter={setDrinkName}
+                vibration={context.savedVibration}
               />
               <View
                 style={{

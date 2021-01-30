@@ -13,10 +13,10 @@ import COLORS from "./constants/colors";
 import {
   initShot,
   fetchShots,
-  initWheel,
+  initSettings,
   defaultShots,
-  fetchWheel,
-  insertWheel,
+  fetchSettings,
+  insertSettings,
 } from "./database/sqlite";
 
 // Return default font-family
@@ -37,6 +37,7 @@ export default function App() {
 
   const [savedDrinks, setSavedDrinks] = useState([]);
   const [savedWheel, setSavedWheel] = useState([]);
+  const [savedVibration, setSavedVibration] = useState([]);
 
   // Handle a screen change
   const changeScreenHandler = (selectedScreen) => {
@@ -47,7 +48,7 @@ export default function App() {
   async function initData() {
     try {
       await initShot();
-      await initWheel();
+      await initSettings();
       await defaultShots();
     } catch (err) {
       console.log("Initializing database failed.");
@@ -63,14 +64,15 @@ export default function App() {
       const dataFetch = fetch.rows._array;
       setSavedDrinks(dataFetch.reverse());
 
-      let status = await fetchWheel();
+      let status = await fetchSettings();
       let dataStatus = status.rows._array;
       if (!dataStatus.length) {
-        newStatus = await insertWheel(1);
-        status = await fetchWheel();
+        newStatus = await insertSettings(1, 1);
+        status = await fetchSettings();
         dataStatus = status.rows._array;
       }
-      setSavedWheel(dataStatus);
+      setSavedWheel(dataStatus[0].wheel);
+      setSavedVibration(dataStatus[0].vibration);
       console.log("Data fetched from database");
     } catch (error) {
       console.log("Fetching data from database failed");
@@ -120,6 +122,8 @@ export default function App() {
         setSavedDrinks: setSavedDrinks,
         savedWheel: savedWheel,
         setSavedWheel: setSavedWheel,
+        savedVibration: savedVibration,
+        setSavedVibration: setSavedVibration,
       }}
     >
       <View style={styles.screen}>{activeScreen}</View>

@@ -116,16 +116,17 @@ class WheelOfFortune extends Component {
   _onPress = async () => {
     const duration = this.props.duration || 10000;
 
-    // Start of vibration pattern
-    vibArr = [300, 400, 600];
-    // Loop through wheel duration
-    for (i = 1; i < duration / 1000; i++) {
-      // Vibrate 400ms, wait 600ms
-      vibArr = [...vibArr, 400, 600];
+    if (this.props.vibration) {
+      // Start of vibration pattern
+      let vibArr = [300, 400, 600];
+      // Loop through wheel duration
+      for (i = 1; i < duration / 1000; i++) {
+        // Vibrate 400ms, wait 600ms
+        vibArr = [...vibArr, 400, 600];
+      }
+      // Execute vibration pattern
+      Vibration.vibrate(vibArr);
     }
-    // Execute vibration pattern
-    Vibration.vibrate(vibArr);
-
     const { sound } = await Audio.Sound.createAsync(
       require("../assets/sounds/wheel_spinning.mp3")
     );

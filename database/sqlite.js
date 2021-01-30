@@ -2,7 +2,7 @@ import * as SQLite from "expo-sqlite";
 
 const db = SQLite.openDatabase("shots.db");
 
-//Initialize shot table
+// Initialize shot table
 export const initShot = async () => {
   const promise = new Promise((resolve, reject) => {
     db.transaction((tx) => {
@@ -21,12 +21,12 @@ export const initShot = async () => {
   return promise;
 };
 
-//Initialize wheel table
-export const initWheel = async () => {
+// Initialize settings table
+export const initSettings = async () => {
   const promise = new Promise((resolve, reject) => {
     db.transaction((tx) => {
       tx.executeSql(
-        "CREATE TABLE IF NOT EXISTS wheel (active INTEGER NOT NULL);",
+        "CREATE TABLE IF NOT EXISTS settings (wheel INTEGER NOT NULL, vibration INTEGER NOT NULL);",
         [],
         () => {
           resolve();
@@ -40,7 +40,7 @@ export const initWheel = async () => {
   return promise;
 };
 
-//Insert shot info into database
+// Insert default shots into database
 export const defaultShots = async () => {
   const promise = new Promise((resolve, reject) => {
     db.transaction((tx) => {
@@ -72,7 +72,7 @@ export const defaultShots = async () => {
   return promise;
 };
 
-//Insert shot info into database
+// Insert shot info into database
 export const insertShot = (name, abv, occ, imageUri) => {
   const promise = new Promise((resolve, reject) => {
     db.transaction((tx) => {
@@ -91,13 +91,13 @@ export const insertShot = (name, abv, occ, imageUri) => {
   return promise;
 };
 
-//Insert wheel status into database
-export const insertWheel = (active) => {
+// Insert status settings into database
+export const insertSettings = (wheel, vibration) => {
   const promise = new Promise((resolve, reject) => {
     db.transaction((tx) => {
       tx.executeSql(
-        "INSERT INTO wheel (active) VALUES (?);",
-        [active],
+        "INSERT INTO settings (wheel, vibration) VALUES (?, ?);",
+        [wheel, vibration],
         (_, result) => {
           resolve(result);
         },
@@ -110,7 +110,7 @@ export const insertWheel = (active) => {
   return promise;
 };
 
-//Delete shot info out of database
+// Delete shot info out of database
 export const deleteShot = (id) => {
   const promise = new Promise((resolve, reject) => {
     db.transaction((tx) => {
@@ -129,7 +129,7 @@ export const deleteShot = (id) => {
   return promise;
 };
 
-//Get shot info from database
+// Get shot info from database
 export const fetchShots = () => {
   const promise = new Promise((resolve, reject) => {
     db.transaction((tx) => {
@@ -148,12 +148,12 @@ export const fetchShots = () => {
   return promise;
 };
 
-//Get wheel status from database
-export const fetchWheel = () => {
+// Get status settings from database
+export const fetchSettings = () => {
   const promise = new Promise((resolve, reject) => {
     db.transaction((tx) => {
       tx.executeSql(
-        "SELECT * FROM wheel",
+        "SELECT * FROM settings",
         [],
         (_, result) => {
           resolve(result);
@@ -167,13 +167,32 @@ export const fetchWheel = () => {
   return promise;
 };
 
-//Update wheel status of database
-export const updateWheel = (active) => {
+// Update wheel status of database
+export const updateWheel = (wheel) => {
   const promise = new Promise((resolve, reject) => {
     db.transaction((tx) => {
       tx.executeSql(
-        "UPDATE wheel SET active = ?",
-        [active],
+        "UPDATE settings SET wheel = ?",
+        [wheel],
+        (_, result) => {
+          resolve(result);
+        },
+        (_, err) => {
+          reject(err);
+        }
+      );
+    });
+  });
+  return promise;
+};
+
+// Update vibration status of database
+export const updateVibration = (vibration) => {
+  const promise = new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        "UPDATE settings SET vibration = ?",
+        [vibration],
         (_, result) => {
           resolve(result);
         },

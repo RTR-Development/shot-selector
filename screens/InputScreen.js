@@ -22,7 +22,12 @@ import COLORS from "../constants/colors";
 import BottomPopup from "../components/BottomPopup";
 
 import DrinksContext from "../context/drinks-context";
-import { insertShot, deleteShot, updateWheel } from "../database/sqlite";
+import {
+  insertShot,
+  deleteShot,
+  updateWheel,
+  updateVibration,
+} from "../database/sqlite";
 
 const popupList = [
   {
@@ -143,49 +148,6 @@ const InputScreen = (props) => {
     }
   };
 
-  // const handleDefaultAction = async (context) => {
-  //   await playSound("menu");
-
-  //   // Create default options
-  //   const defaultDrinks = ["Bier", "Vodka", "Bacardi"];
-  //   const defaultABV = [5, 35, 30];
-  //   const defaultPictures = ["Bier", "Vodka", "Bacardi"];
-
-  //   // Select random number
-  //   const magic = Math.floor(Math.random() * defaultDrinks.length);
-
-  //   // Select shots from options according to random number
-  //   let drinkName = defaultDrinks[magic];
-  //   let drinkABV = defaultABV[magic];
-  //   let drinkOccurence = 1;
-  //   let drinkPicture = defaultPictures[magic];
-
-  //   // Insert into databases
-  //   try {
-  //     const dbResult = await insertShot(
-  //       drinkName,
-  //       drinkABV,
-  //       drinkOccurence,
-  //       drinkPicture
-  //     );
-  //     console.log(dbResult);
-  //     context.setSavedDrinks((curSavedDrinks) => [
-  //       {
-  //         id: dbResult.insertId,
-  //         name: drinkName,
-  //         abv: drinkABV,
-  //         occ: parseInt(drinkOccurence),
-  //         imageUri: drinkPicture,
-  //       },
-  //       ...curSavedDrinks,
-  //     ]);
-  //     console.log("Data successfully added to database");
-  //   } catch (err) {
-  //     console.log("Failed to add data to database");
-  //     console.log(err);
-  //   }
-  // };
-
   // Delete selected shot out of SQLite database and Context database
   const handleDeleteAction = async (context, id) => {
     await playSound("break_glass");
@@ -202,18 +164,35 @@ const InputScreen = (props) => {
   };
 
   // Change wheel status switch in SQLite database and Context database
-  const handleSwitchAction = async (context) => {
-    await playSound("menu");
+  const handleSwitchWheel = async (context) => {
+    // await playSound("menu");
     try {
-      if (context.savedWheel[0].active == 1) {
+      if (context.savedWheel == 1) {
         const dbResult = await updateWheel(0);
-        context.setSavedWheel([{ active: 0 }]);
+        context.setSavedWheel(0);
       } else {
         const dbResult = await updateWheel(1);
-        context.setSavedWheel([{ active: 1 }]);
+        context.setSavedWheel(1);
       }
     } catch (err) {
       console.log("Failed to change wheel status");
+      console.log(err);
+    }
+  };
+
+  // Change wheel status switch in SQLite database and Context database
+  const handleSwitchVibration = async (context) => {
+    // await playSound("menu");
+    try {
+      if (context.savedVibration == 1) {
+        const dbResult = await updateVibration(0);
+        context.setSavedVibration(0);
+      } else {
+        const dbResult = await updateVibration(1);
+        context.setSavedVibration(1);
+      }
+    } catch (err) {
+      console.log("Failed to change vibration status");
       console.log(err);
     }
   };
@@ -340,22 +319,17 @@ const InputScreen = (props) => {
               <Text style={{ textAlign: "center" }}>Wheel:</Text>
               <Switch
                 style={{ alignSelf: "center" }}
-                onValueChange={() => handleSwitchAction(context)}
-                value={context.savedWheel[0].active ? true : false}
+                onValueChange={() => handleSwitchWheel(context)}
+                value={context.savedWheel ? true : false}
               />
             </View>
             <View style={{ flex: 1 }}>
-              <Text style={{ textAlign: "center" }}>Random:</Text>
-              <TouchableOpacity
+              <Text style={{ textAlign: "center" }}>Vibration:</Text>
+              <Switch
                 style={{ alignSelf: "center" }}
-                onPress={() => handleDefaultAction(context)}
-                activeOpacity={0.7}
-              >
-                <Image
-                  source={require("../assets/images/icon_shot.png")}
-                  style={{ width: 30, height: 30 }}
-                />
-              </TouchableOpacity>
+                onValueChange={() => handleSwitchVibration(context)}
+                value={context.savedVibration ? true : false}
+              />
             </View>
           </View>
           <View style={styles.flatListContainer}>

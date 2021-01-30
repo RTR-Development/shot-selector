@@ -88,6 +88,7 @@ class Wheel extends Component {
             innerRadius={20}
             colors={[COLORS.primaryColor, COLORS.red]}
             backgroundColor={COLORS.black}
+            vibration={this.props.vibration}
           />
         </View>
       </Modal>
