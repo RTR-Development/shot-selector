@@ -6,7 +6,14 @@ import Config from "../components/Config";
 import WheelOfFortune from "./WheelOfFortune";
 
 let rewards = [];
-const allRewards = ["2x", "1x", "Share 2!", "New Shot!", "No Shot!", "Hand out"];
+const allRewards = [
+  "2x",
+  "1x",
+  "Share 2!",
+  "New Shot!",
+  "No Shot!",
+  "Hand out",
+];
 const numOfRewards = [4, 6, 8];
 
 class Wheel extends Component {
@@ -21,17 +28,19 @@ class Wheel extends Component {
   }
 
   show = () => {
-    //Calculate random rewards for wheel
+    // Calculate random rewards for wheel
     rewards = [];
     numOfItems = numOfRewards[Math.floor(Math.random() * 3)];
     for (i = 0; i < numOfItems; i++) {
       rewards.push(allRewards[Math.floor(Math.random() * allRewards.length)]);
     }
-    //Show wheel modal
+    // Show wheel modal
     this.setState({ show: true });
   };
 
+  // Let wheel disappear
   close = (value, index, shotName, shotSetter) => {
+    // Save outcome wheel
     this.setState({
       winnerValue: value,
       winnerIndex: index,
@@ -39,6 +48,7 @@ class Wheel extends Component {
     setTimeout(() => {
       this.setState({ show: false });
     }, 300);
+    // Alter screen text to adhere to wheel outcome
     if (
       this.state.winnerValue === "2x" ||
       this.state.winnerValue === "1x" ||
@@ -94,9 +104,4 @@ const styles = StyleSheet.create({
     maxHeight: "90%",
     paddingBottom: Config.deviceHeight * 0.28,
   },
-  // tapToStart: {
-  //   fontSize: 50,
-  //   color: COLORS.white,
-  //   fontFamily: "assistant-bold",
-  // },
 });

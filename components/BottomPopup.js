@@ -38,7 +38,7 @@ class BottomPopup extends Component {
     this.setState({ show: value });
   };
 
-  //Ask for CAMERA and CAMERA_ROLL permissions
+  // Ask for CAMERA and CAMERA_ROLL permissions
   verifyPermissions = async () => {
     const result = await Permissions.askAsync(
       Permissions.CAMERA,
@@ -55,7 +55,7 @@ class BottomPopup extends Component {
     return true;
   };
 
-  //Open camera and save taken picture
+  // Open camera and save taken picture
   takeImageHandler = async () => {
     const hasPermission = await this.verifyPermissions();
     if (!hasPermission) {
@@ -70,7 +70,7 @@ class BottomPopup extends Component {
     this.setState({ show: false });
   };
 
-  //Open image gallery and save selected picture
+  // Open image gallery and save selected picture
   useImageRoll = async () => {
     const hasPermission = await this.verifyPermissions();
     if (!hasPermission) {

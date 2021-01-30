@@ -1,6 +1,6 @@
 import { Dimensions } from "react-native";
 
-//Get device dimensions
+// Get device dimensions
 const Config = {
   deviceWidth: Dimensions.get("window").width,
   deviceHeight: Dimensions.get("window").height,

@@ -17,7 +17,7 @@ import Config from "../components/Config";
 import COLORS from "../constants/colors";
 
 const StartScreen = (props) => {
-  //Open link to privacy statement
+  // Open link to privacy statement
   privacyHandler = async () => {
     await playSound();
     Alert.alert(
@@ -40,7 +40,7 @@ const StartScreen = (props) => {
     );
   };
 
-  //Go to store page for user to like the app
+  // Go to store page for user to like the app
   likeHandler = async () => {
     await playSound();
     setTimeout(
@@ -52,7 +52,7 @@ const StartScreen = (props) => {
     );
   };
 
-  //Ask for VIBRATION permission
+  // Ask for VIBRATION permission
   verifyPermissions = async () => {
     const result = await Permissions.askAsync(Permissions.MOTION);
     if (result.status !== "granted") {
@@ -66,23 +66,24 @@ const StartScreen = (props) => {
     return true;
   };
 
+  // Play menu sound
   playSound = async () => {
     const { sound } = await Audio.Sound.createAsync(
       require("../assets/sounds/menu.mp3")
     );
-
     await sound.playAsync();
   };
 
   changeScreen = async (screen) => {
     await playSound();
-    console.log(screen);
+    // Check for permission
     if (screen == "PlayScreen") {
       const hasPermission = await verifyPermissions();
       if (!hasPermission) {
         return;
       }
     }
+    // Change screen
     props.onChangeScreen(screen);
   };
 

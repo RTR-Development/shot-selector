@@ -16,15 +16,12 @@ import DrinksContext from "../context/drinks-context";
 import Config from "../components/Config";
 import Wheel from "../components/Wheel";
 
-
-//Hello this is Rick, I hope you can see this comment in the Git
-
-//Random num generator
+// Random num generator
 const generateRandomNumber = (max) => {
   return Math.round(Math.random() * (max - 1) + 1);
 };
 
-//Ensure that back gesture / button returns to the StartScreen
+// Ensure that back gesture / button returns to the StartScreen
 const PlayScreen = (props) => {
   useEffect(() => {
     const backAction = () => {
@@ -40,14 +37,14 @@ const PlayScreen = (props) => {
     return () => backHandler.remove();
   }, []);
 
-  //Save current shot values, which consist of the name, abv, chance, image and counter
+  // Save current shot values, which consist of the name, abv, chance, image and counter
   const [drinkName, setDrinkName] = useState("Press to start");
   const [drinkABV, setDrinkABV] = useState(0);
   const [drinkChance, setDrinkChance] = useState(0);
   const [selectedImage, setSelectedImage] = useState();
   const [count, setCount] = useState(0);
 
-  //Save shot statistic background colors
+  // Save shot statistic background colors
   const [countColor, setCountColor] = useState("rgb(33,33,33)");
   const [alcColor, setAlcColor] = useState("rgb(33,33,33)");
   const [chanceColor, setChanceColor] = useState("rgb(33,33,33)");
@@ -65,23 +62,23 @@ const PlayScreen = (props) => {
     await sound.playAsync();
   };
 
-  //Choose randomly a shot out of the Context database
+  // Choose randomly a shot out of the Context database
   const chooseDrink = (context) => {
     playSound();
 
-    //Check if count of all ocurences already has been calculated
+    // Check if count of all ocurences already has been calculated
     if (countOcc === 0) {
-      //Sum up all occurences of all shots in the Context database
+      // Sum up all occurences of all shots in the Context database
       for (const element of context.savedDrinks) {
         countOcc += element.occ;
       }
     }
-    //Generate random num
+    // Generate random num
     const random = generateRandomNumber(countOcc);
 
-    //Loop through occurences of all shots in the Context database and add to a counter
-    //Check in every iteration if counter is equal or larger than randomly generated num
-    //If check is satisfied alter screen object/useStates to current shot of the loop and break loop.
+    // Loop through occurences of all shots in the Context database and add to a counter
+    // Check in every iteration if counter is equal or larger than randomly generated num
+    // If check is satisfied alter screen object/useStates to current shot of the loop and break loop.
     let counter = 0;
     for (const element of context.savedDrinks) {
       counter += element.occ;
@@ -89,7 +86,7 @@ const PlayScreen = (props) => {
         setDrinkName(element.name);
         setDrinkABV(element.abv);
         setDrinkChance(((element.occ / countOcc) * 100).toFixed(0));
-        console.log(element.imageUri)
+        console.log(element.imageUri);
         setSelectedImage(element.imageUri);
         setCount(count + 1);
         if (context.savedWheel[0].active && Math.random() < 0.5) {
@@ -100,7 +97,7 @@ const PlayScreen = (props) => {
     }
   };
 
-  //Update color of drinkInformationContainers if there values change
+  // Update color of drinkInformationContainers if there values change
   useEffect(() => {
     if (count > 0) {
       setCountColor(transitionCountColor());
@@ -109,7 +106,7 @@ const PlayScreen = (props) => {
     }
   }, [count, drinkABV, drinkChance]);
 
-  //This will increase the red color of the count background
+  // This will increase the red color of the count background
   // by increasing the rgb from darkgrey to red
   const transitionCountColor = () => {
     let red = String(33 + count * 10);
@@ -118,7 +115,7 @@ const PlayScreen = (props) => {
     return "rgb(" + red + "," + green + "," + blue + ")";
   };
 
-  //This will change the alc background color from yellow to red
+  // This will change the alc background color from yellow to red
   // depending on the alc percentage
   const transitionAlcColor = () => {
     let red = String(255);
@@ -127,7 +124,7 @@ const PlayScreen = (props) => {
     return "rgb(" + red + "," + green + "," + blue + ")";
   };
 
-  //This will increase the green color of the chance background
+  // This will increase the green color of the chance background
   // by increasing the rgb from darkgreen to green
   const transitionChanceColor = () => {
     let red = String(0);
@@ -150,55 +147,25 @@ const PlayScreen = (props) => {
               </View>
               <View style={{ flex: 1 }}>
                 <View style={{ marginBottom: Config.deviceHeight * 0.05 }}>
-                  <Text
-                    style={{
-                      textAlign: "center",
-                      fontFamily: "assistant-regular",
-                      fontSize: 20,
-                    }}
-                  >
+                  <Text style={styles.bodyText}>
                     No shots/drinks have been entered yet.
                   </Text>
                 </View>
                 <View>
-                  <Text
-                    style={{
-                      textAlign: "center",
-                      fontFamily: "assistant-regular",
-                      fontSize: 20,
-                    }}
-                  >
-                    To enter shots:
-                  </Text>
+                  <Text style={styles.bodyText}>To enter shots:</Text>
                   <View
                     style={{
                       flexDirection: "row",
                       justifyContent: "center",
                     }}
                   >
-                    <Text
-                      style={{
-                        textAlign: "center",
-                        fontFamily: "assistant-regular",
-                        fontSize: 20,
-                      }}
-                    >
-                      Go back{" "}
-                    </Text>
+                    <Text style={styles.bodyText}>Go back </Text>
                     <Ionicons
                       name="md-arrow-round-back"
                       size={22}
                       color={COLORS.black}
                     />
-                    <Text
-                      style={{
-                        textAlign: "center",
-                        fontFamily: "assistant-regular",
-                        fontSize: 20,
-                      }}
-                    >
-                      ,
-                    </Text>
+                    <Text style={styles.bodyText}>,</Text>
                   </View>
                   <View
                     style={{
@@ -206,30 +173,13 @@ const PlayScreen = (props) => {
                       justifyContent: "center",
                     }}
                   >
-                    <Text
-                      style={{
-                        textAlign: "center",
-                        fontFamily: "assistant-regular",
-                        fontSize: 20,
-                      }}
-                    >
-                      press{" "}
-                    </Text>
+                    <Text style={styles.bodyText}>press </Text>
                     <Ionicons
                       name="md-finger-print"
                       size={22}
                       color={COLORS.black}
                     />
-                    <Text
-                      style={{
-                        textAlign: "center",
-                        fontFamily: "assistant-regular",
-                        fontSize: 20,
-                      }}
-                    >
-                      {" "}
-                      "SELECT SHOTS" button.
-                    </Text>
+                    <Text style={styles.bodyText}> "SELECT SHOTS" button.</Text>
                   </View>
                 </View>
               </View>
@@ -237,38 +187,29 @@ const PlayScreen = (props) => {
           ) : (
             <View>
               <View style={styles.imageContainer}>
-              {!selectedImage ? (
+                {!selectedImage ? (
                   <Image
                     source={require("../assets/images/shot_selector_logo.png")}
                     style={styles.image}
                   />
+                ) : selectedImage == "Bier" ? (
+                  <Image
+                    source={require("../assets/images/shot_selector_logo.png")}
+                    style={styles.image}
+                  />
+                ) : selectedImage == "Vodka" ? (
+                  <Image
+                    source={require("../assets/images/icon_shot.png")}
+                    style={styles.image}
+                  />
+                ) : selectedImage == "Bacardi" ? (
+                  <Image
+                    source={require("../assets/images/knoob.png")}
+                    style={styles.image}
+                  />
                 ) : (
-                  (selectedImage == "Bier" ? (
-                    <Image
-                      source={require("../assets/images/shot_selector_logo.png")}
-                      style={styles.image}
-                    />
-                  ) : (
-                    (selectedImage == "Vodka" ? (
-                      <Image
-                        source={require("../assets/images/icon_shot.png")}
-                        style={styles.image}
-                      />
-                    ) : (
-                      (selectedImage == "Bacardi" ? (
-                        <Image
-                          source={require("../assets/images/knoob.png")}
-                          style={styles.image}
-                        />
-                    ) :
-                    (
-                    <Image
-                      source={{ uri: selectedImage }}
-                      style={styles.image}
-                    />
-                  ))))))
-                )
-              }
+                  <Image source={{ uri: selectedImage }} style={styles.image} />
+                )}
               </View>
               <Wheel
                 ref={(target) => (wheelRef = target)}
@@ -288,24 +229,12 @@ const PlayScreen = (props) => {
                   {drinkName}
                 </Text>
               </View>
-              <View
-                style={{
-                  flex: 1,
-                  flexDirection: "row",
-                  alignItems: "flex-end",
-                  justifyContent: "center",
-                  width: Config.deviceWidth,
-                  marginBottom:
-                    Config.deviceHeight > 700
-                      ? Config.deviceHeight * 0.028
-                      : Config.deviceHeight * 0.017,
-                }}
-              >
+              <View style={styles.buttonContainer}>
                 <TouchableOpacity
                   onPress={() => chooseDrink(context)}
                   activeOpacity={0.7}
                 >
-                  <View style={styles.buttonContainer}>
+                  <View style={styles.button}>
                     <Text style={styles.buttonText}>SHOT!</Text>
                   </View>
                 </TouchableOpacity>
@@ -376,6 +305,11 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     resizeMode: "contain",
   },
+  bodyText: {
+    textAlign: "center",
+    fontFamily: "assistant-regular",
+    fontSize: 20,
+  },
   drinkText: {
     fontFamily: "assistant-bold",
     textAlign: "center",
@@ -399,6 +333,17 @@ const styles = StyleSheet.create({
         : 20,
   },
   buttonContainer: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "flex-end",
+    justifyContent: "center",
+    width: Config.deviceWidth,
+    marginBottom:
+      Config.deviceHeight > 700
+        ? Config.deviceHeight * 0.028
+        : Config.deviceHeight * 0.017,
+  },
+  button: {
     alignSelf: "center",
     backgroundColor: COLORS.secondaryColor,
     width: Config.deviceWidth * 0.6,

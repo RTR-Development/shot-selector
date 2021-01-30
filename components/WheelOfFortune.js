@@ -102,11 +102,11 @@ class WheelOfFortune extends Component {
 
   _getwinnerIndex = () => {
     const deg = Math.abs(Math.round(this.angle % this.oneTurn));
-    //Wheel turning counterclockwise
+    // Wheel turning counterclockwise
     if (this.angle < 0) {
       return Math.floor(deg / this.angleBySegment);
     }
-    //Wheel turning clockwise
+    // Wheel turning clockwise
     return (
       (this.numberOfSegments - Math.floor(deg / this.angleBySegment)) %
       this.numberOfSegments
@@ -116,14 +116,14 @@ class WheelOfFortune extends Component {
   _onPress = async () => {
     const duration = this.props.duration || 10000;
 
-    //Start of vibration pattern
+    // Start of vibration pattern
     vibArr = [300, 400, 600];
-    //Loop through wheel duration
+    // Loop through wheel duration
     for (i = 1; i < duration / 1000; i++) {
-      //Vibrate 400ms, wait 600ms
+      // Vibrate 400ms, wait 600ms
       vibArr = [...vibArr, 400, 600];
     }
-    //Execute vibration pattern
+    // Execute vibration pattern
     Vibration.vibrate(vibArr);
 
     const { sound } = await Audio.Sound.createAsync(

@@ -18,7 +18,7 @@ import {
   insertWheel,
 } from "./database/sqlite";
 
-//Initialize SQLite database
+// Initialize SQLite database
 initShot()
   .then(() => {
     initWheel().then(() => {
@@ -30,7 +30,7 @@ initShot()
     console.log(err);
   });
 
-//Return default font-family
+// Return default font-family
 const fetchFonts = () => {
   return Font.loadAsync({
     "assistant-regular": require("./assets/fonts/Assistant-SemiBold.ttf"),
@@ -39,23 +39,23 @@ const fetchFonts = () => {
 };
 
 export default function App() {
-  //Check if initial data has been loaded
-  //Used for fonts
+  // Check if initial data has been loaded
+  // Used for fonts
   const [dataLoaded, setDataLoaded] = useState(false);
 
-  //Manage currently active screen
+  // Manage currently active screen
   const [content, setContent] = useState("StartScreen");
 
   const [savedDrinks, setSavedDrinks] = useState([]);
   const [savedWheel, setSavedWheel] = useState([]);
 
-  //Handle a screen change
+  // Handle a screen change
   const changeScreenHandler = (selectedScreen) => {
     setContent(selectedScreen);
   };
 
-  //Fetch data from sqlite database
-  //Save into context with the help of the useState savedShots
+  // Fetch data from sqlite database
+  // Save into context with the help of the useState savedShots
   async function fetchData() {
     try {
       const fetch = await fetchShots();
@@ -81,11 +81,11 @@ export default function App() {
     fetchData();
   }, []);
 
-  //Set StartScreen as the initial active screen
-  //@props changeScreenHandler for screen to call if screen change needs to be executed
+  // Set StartScreen as the initial active screen
+  // @props changeScreenHandler for screen to call if screen change needs to be executed
   let activeScreen = <StartScreen onChangeScreen={changeScreenHandler} />;
 
-  //Alter currently active screen if content / screen was altered by changeScreenHandler
+  // Alter currently active screen if content / screen was altered by changeScreenHandler
   if (content !== "StartScreen") {
     if (content === "PlayScreen") {
       activeScreen = <PlayScreen onChangeScreen={changeScreenHandler} />;
@@ -96,8 +96,8 @@ export default function App() {
     }
   }
 
-  //Load initial data of the app
-  //Call fetchFonts to get default fonts
+  // Load initial data of the app
+  // Call fetchFonts to get default fonts
   if (!dataLoaded) {
     return (
       <AppLoading

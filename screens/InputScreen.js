@@ -55,16 +55,16 @@ const InputScreen = (props) => {
     return () => backHandler.remove();
   }, []);
 
-  //Save current TextInput values of the name, abv and occurrence;
-  //save the currently selected image
+  // Save current TextInput values of the name, abv and occurrence;
+  // save the currently selected image
   const [drinkName, setDrinkName] = useState();
   const [drinkABV, setDrinkABV] = useState();
   const [drinkOccurence, setDrinkOccurence] = useState(1);
   const [selectedImage, setSelectedImage] = useState();
 
-  //Manage BottomPopup
-  //onShowPopup makes BottomPopup visible on screen
-  //onClosePopup makes BottomPopup invisible on screen
+  // Manage BottomPopup
+  // onShowPopup makes BottomPopup visible on screen
+  // onClosePopup makes BottomPopup invisible on screen
   let popupRef = React.createRef();
   const onShowPopup = async () => {
     await playSound("menu");
@@ -78,17 +78,17 @@ const InputScreen = (props) => {
     setSelectedImage(imagePath);
   };
 
-  //Add filled in shot into SQLite database and Context database
+  // Add filled in shot into SQLite database and Context database
   const handleAddAction = async (context) => {
     await playSound("menu");
-    //Check if a shot name has been added
+    // Check if a shot name has been added
     if (!drinkName) {
       Alert.alert(
         "No name specified",
         "Please enter a name of the shot or drink",
         [{ text: "OK" }]
       );
-      //Check if a shot occurence has been added
+      // Check if a shot occurence has been added
     } else if (!Number.isInteger(parseInt(drinkABV))) {
       Alert.alert(
         "No correct ALC specified",
@@ -96,9 +96,11 @@ const InputScreen = (props) => {
         [{ text: "OK" }]
       );
     } else {
+      // Create persistant filesystem path
       let newPath = "";
       if (selectedImage) {
         newPath = FileSystem.documentDirectory + selectedImage.split("/").pop();
+        // Move file from cache location to persistant file location
         try {
           await FileSystem.moveAsync({
             from: selectedImage,
@@ -108,6 +110,7 @@ const InputScreen = (props) => {
           console.log(err);
         }
       }
+      // Insert into databases
       try {
         const dbResult = await insertShot(
           drinkName,
@@ -131,7 +134,7 @@ const InputScreen = (props) => {
         console.log("Failed to add data to database");
         console.log(err);
       }
-      //Clear all textinputs and image selector
+      // Clear all textinputs and image selector
       setSelectedImage(null);
       this.nameInput.clear();
       this.abvInput.clear();
@@ -183,7 +186,7 @@ const InputScreen = (props) => {
     }
   };
 
-  //Delete selected shot out of SQLite database and Context database
+  // Delete selected shot out of SQLite database and Context database
   const handleDeleteAction = async (context, id) => {
     await playSound("break_glass");
     try {
@@ -198,7 +201,7 @@ const InputScreen = (props) => {
     }
   };
 
-  //Change wheel status switch in SQLite database and Context database
+  // Change wheel status switch in SQLite database and Context database
   const handleSwitchAction = async (context) => {
     await playSound("menu");
     try {
@@ -243,9 +246,6 @@ const InputScreen = (props) => {
           </View>
           <View style={styles.inputContainer}>
             <View>
-              {/* <View style={[styles.inputCategory, { paddingTop: 8 }]}>
-                <Text style={styles.textCategory}>Test123:</Text>
-              </View> */}
               <View style={[styles.inputCategory, { paddingTop: 8 }]}>
                 <Text style={styles.textCategory}>Name:</Text>
               </View>
@@ -375,15 +375,9 @@ const InputScreen = (props) => {
                     activeOpacity={0.7}
                   >
                     <View style={styles.list}>
-                      {/* <View style={styles.textBox}> */}
                       <Text style={styles.listText}>{itemData.item.name}</Text>
-                      {/* </View> */}
-                      {/* <View style={styles.textBox}> */}
                       <Text style={styles.listText}>{itemData.item.abv}</Text>
-                      {/* </View> */}
-                      {/* <View style={styles.textBox}> */}
                       <Text style={styles.listText}>{itemData.item.occ}</Text>
-                      {/* </View> */}
                     </View>
                   </TouchableOpacity>
                 </View>
