@@ -3,11 +3,11 @@ import * as SQLite from "expo-sqlite";
 const db = SQLite.openDatabase("shots.db");
 
 //Initialize shot table
-export const initShot = () => {
+export const initShot = async () => {
   const promise = new Promise((resolve, reject) => {
     db.transaction((tx) => {
       tx.executeSql(
-        "CREATE TABLE IF NOT EXISTS shots (id INTEGER PRIMARY KEY NOT NULL, name TEXT NOT NULL, abv REAL, occ INTEGER NOT NULL, imageUri TEXT);",
+        "CREATE TABLE IF NOT EXISTS shots (id INTEGER PRIMARY KEY NOT NULL, name TEXT NOT NULL, abv REAL, occ INTEGER NOT NULL, imageUri TEXT, imageInt INTEGER);",
         [],
         () => {
           resolve();
@@ -22,13 +22,45 @@ export const initShot = () => {
 };
 
 //Initialize wheel table
-export const initWheel = () => {
+export const initWheel = async () => {
   const promise = new Promise((resolve, reject) => {
     db.transaction((tx) => {
       tx.executeSql(
         "CREATE TABLE IF NOT EXISTS wheel (active INTEGER NOT NULL);",
         [],
         () => {
+          resolve();
+        },
+        (_, err) => {
+          reject(err);
+        }
+      );
+    });
+  });
+  return promise;
+};
+
+//Insert shot info into database
+export const defaultShots = async () => {
+  const promise = new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        "SELECT COUNT(*) FROM shots;",
+        [],
+        (_, result) => {
+          if (result.rows._array[0]["COUNT(*)"] == 0) {
+            tx.executeSql(
+              "INSERT INTO shots (name, abv, occ, imageInt) VALUES (?, ?, ?, ?), (?, ?, ?, ?), (?, ?, ?, ?);",
+              ["Bier", 5, 1, 0, "Bacardi", 38, 1, 1, "Vodka", 35, 1, 2],
+              (_, result) => {
+                console.log("here3");
+                resolve();
+              },
+              (_, err) => {
+                reject(err);
+              }
+            );
+          }
           resolve();
         },
         (_, err) => {

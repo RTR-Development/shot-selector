@@ -41,13 +41,20 @@ const PlayScreen = (props) => {
   const [drinkName, setDrinkName] = useState("Press to start");
   const [drinkABV, setDrinkABV] = useState(0);
   const [drinkChance, setDrinkChance] = useState(0);
-  const [selectedImage, setSelectedImage] = useState();
+  const [selectedImageUri, setSelectedImageUri] = useState();
+  const [selectedImageInt, setSelectedImageInt] = useState();
   const [count, setCount] = useState(0);
 
   // Save shot statistic background colors
   const [countColor, setCountColor] = useState("rgb(33,33,33)");
   const [alcColor, setAlcColor] = useState("rgb(33,33,33)");
   const [chanceColor, setChanceColor] = useState("rgb(33,33,33)");
+
+  const defaultImages = [
+    require("../assets/images/knoob.png"),
+    require("../assets/images/icon_shot.png"),
+    require("../assets/images/shot_selector_logo.png"),
+  ];
 
   let wheelRef = React.createRef();
 
@@ -86,8 +93,8 @@ const PlayScreen = (props) => {
         setDrinkName(element.name);
         setDrinkABV(element.abv);
         setDrinkChance(((element.occ / countOcc) * 100).toFixed(0));
-        console.log(element.imageUri);
-        setSelectedImage(element.imageUri);
+        setSelectedImageUri(element.imageUri);
+        setSelectedImageInt(element.image);
         setCount(count + 1);
         if (context.savedWheel[0].active && Math.random() < 0.5) {
           wheelRef.show();
@@ -187,28 +194,21 @@ const PlayScreen = (props) => {
           ) : (
             <View>
               <View style={styles.imageContainer}>
-                {!selectedImage ? (
+                {!selectedImageUri && !Number.isInteger(selectedImageInt) ? (
                   <Image
                     source={require("../assets/images/shot_selector_logo.png")}
                     style={styles.image}
                   />
-                ) : selectedImage == "Bier" ? (
+                ) : !selectedImageUri ? (
                   <Image
-                    source={require("../assets/images/shot_selector_logo.png")}
-                    style={styles.image}
-                  />
-                ) : selectedImage == "Vodka" ? (
-                  <Image
-                    source={require("../assets/images/icon_shot.png")}
-                    style={styles.image}
-                  />
-                ) : selectedImage == "Bacardi" ? (
-                  <Image
-                    source={require("../assets/images/knoob.png")}
+                    source={defaultImages[selectedImageInt]}
                     style={styles.image}
                   />
                 ) : (
-                  <Image source={{ uri: selectedImage }} style={styles.image} />
+                  <Image
+                    source={{ uri: selectedImageUri }}
+                    style={styles.image}
+                  />
                 )}
               </View>
               <Wheel

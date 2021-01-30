@@ -143,48 +143,48 @@ const InputScreen = (props) => {
     }
   };
 
-  const handleDefaultAction = async (context) => {
-    await playSound("menu");
+  // const handleDefaultAction = async (context) => {
+  //   await playSound("menu");
 
-    // Create default options
-    const defaultDrinks = ["Bier", "Vodka", "Bacardi"];
-    const defaultABV = [5, 35, 30];
-    const defaultPictures = ["Bier", "Vodka", "Bacardi"];
+  //   // Create default options
+  //   const defaultDrinks = ["Bier", "Vodka", "Bacardi"];
+  //   const defaultABV = [5, 35, 30];
+  //   const defaultPictures = ["Bier", "Vodka", "Bacardi"];
 
-    // Select random number
-    const magic = Math.floor(Math.random() * defaultDrinks.length);
+  //   // Select random number
+  //   const magic = Math.floor(Math.random() * defaultDrinks.length);
 
-    // Select shots from options according to random number
-    let drinkName = defaultDrinks[magic];
-    let drinkABV = defaultABV[magic];
-    let drinkOccurence = 1;
-    let drinkPicture = defaultPictures[magic];
+  //   // Select shots from options according to random number
+  //   let drinkName = defaultDrinks[magic];
+  //   let drinkABV = defaultABV[magic];
+  //   let drinkOccurence = 1;
+  //   let drinkPicture = defaultPictures[magic];
 
-    // Insert into databases
-    try {
-      const dbResult = await insertShot(
-        drinkName,
-        drinkABV,
-        drinkOccurence,
-        drinkPicture
-      );
-      console.log(dbResult);
-      context.setSavedDrinks((curSavedDrinks) => [
-        {
-          id: dbResult.insertId,
-          name: drinkName,
-          abv: drinkABV,
-          occ: parseInt(drinkOccurence),
-          imageUri: drinkPicture,
-        },
-        ...curSavedDrinks,
-      ]);
-      console.log("Data successfully added to database");
-    } catch (err) {
-      console.log("Failed to add data to database");
-      console.log(err);
-    }
-  };
+  //   // Insert into databases
+  //   try {
+  //     const dbResult = await insertShot(
+  //       drinkName,
+  //       drinkABV,
+  //       drinkOccurence,
+  //       drinkPicture
+  //     );
+  //     console.log(dbResult);
+  //     context.setSavedDrinks((curSavedDrinks) => [
+  //       {
+  //         id: dbResult.insertId,
+  //         name: drinkName,
+  //         abv: drinkABV,
+  //         occ: parseInt(drinkOccurence),
+  //         imageUri: drinkPicture,
+  //       },
+  //       ...curSavedDrinks,
+  //     ]);
+  //     console.log("Data successfully added to database");
+  //   } catch (err) {
+  //     console.log("Failed to add data to database");
+  //     console.log(err);
+  //   }
+  // };
 
   // Delete selected shot out of SQLite database and Context database
   const handleDeleteAction = async (context, id) => {

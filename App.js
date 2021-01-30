@@ -14,21 +14,10 @@ import {
   initShot,
   fetchShots,
   initWheel,
+  defaultShots,
   fetchWheel,
   insertWheel,
 } from "./database/sqlite";
-
-// Initialize SQLite database
-initShot()
-  .then(() => {
-    initWheel().then(() => {
-      console.log("Initialized database");
-    });
-  })
-  .catch((err) => {
-    console.log("Initializing database failed.");
-    console.log(err);
-  });
 
 // Return default font-family
 const fetchFonts = () => {
@@ -54,6 +43,18 @@ export default function App() {
     setContent(selectedScreen);
   };
 
+  // Initialize SQLite database
+  async function initData() {
+    try {
+      await initShot();
+      await initWheel();
+      await defaultShots();
+    } catch (err) {
+      console.log("Initializing database failed.");
+      console.log(err);
+    }
+  }
+
   // Fetch data from sqlite database
   // Save into context with the help of the useState savedShots
   async function fetchData() {
@@ -77,8 +78,13 @@ export default function App() {
     }
   }
 
+  // Execute database loading
   useEffect(() => {
-    fetchData();
+    async function loadDatabase() {
+      await initData();
+      await fetchData();
+    }
+    loadDatabase();
   }, []);
 
   // Set StartScreen as the initial active screen
