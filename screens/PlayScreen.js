@@ -37,6 +37,15 @@ const PlayScreen = (props) => {
     return () => backHandler.remove();
   }, []);
 
+  // Unload sound
+  useEffect(() => {
+    return sound
+      ? () => {
+          sound.unloadAsync();
+        }
+      : undefined;
+  }, [sound]);
+
   // Save current shot values, which consist of the name, abv, chance, image and counter
   const [drinkName, setDrinkName] = useState("Press to start");
   const [drinkABV, setDrinkABV] = useState(0);
@@ -49,6 +58,8 @@ const PlayScreen = (props) => {
   const [countColor, setCountColor] = useState("rgb(33,33,33)");
   const [alcColor, setAlcColor] = useState("rgb(33,33,33)");
   const [chanceColor, setChanceColor] = useState("rgb(33,33,33)");
+
+  const [sound, setSound] = useState();
 
   const defaultImages = [
     require("../assets/images/knoob.png"),
@@ -65,7 +76,7 @@ const PlayScreen = (props) => {
     const { sound } = await Audio.Sound.createAsync(
       require("../assets/sounds/menu.mp3")
     );
-
+    setSound(sound);
     await sound.playAsync();
   };
 

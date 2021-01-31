@@ -31,7 +31,6 @@ class WheelOfFortune extends Component {
       imageLeft: new Animated.Value(width / 2 - 30),
       imageTop: new Animated.Value(height / 2 - 70),
     };
-
     this.Rewards = this.props.rewards;
     this.RewardCount = this.Rewards.length;
 

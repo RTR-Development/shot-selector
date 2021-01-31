@@ -60,12 +60,23 @@ const InputScreen = (props) => {
     return () => backHandler.remove();
   }, []);
 
+  // Unload sound
+  useEffect(() => {
+    return sound
+      ? () => {
+          sound.unloadAsync();
+        }
+      : undefined;
+  }, [sound]);
+
   // Save current TextInput values of the name, abv and occurrence;
   // save the currently selected image
   const [drinkName, setDrinkName] = useState();
   const [drinkABV, setDrinkABV] = useState();
   const [drinkOccurence, setDrinkOccurence] = useState(1);
   const [selectedImage, setSelectedImage] = useState();
+
+  const [sound, setSound] = useState();
 
   // Manage BottomPopup
   // onShowPopup makes BottomPopup visible on screen
@@ -202,11 +213,13 @@ const InputScreen = (props) => {
       const { sound } = await Audio.Sound.createAsync(
         require("../assets/sounds/menu.mp3")
       );
+      setSound(sound);
       await sound.playAsync();
     } else if (song == "break_glass") {
       const { sound } = await Audio.Sound.createAsync(
         require("../assets/sounds/break_glass.mp3")
       );
+      setSound(sound);
       await sound.playAsync();
     } else {
       console.log("Requested sound not found");

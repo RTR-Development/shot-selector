@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   View,
@@ -17,6 +17,17 @@ import Config from "../components/Config";
 import COLORS from "../constants/colors";
 
 const StartScreen = (props) => {
+  // Unload sound
+  useEffect(() => {
+    return sound
+      ? () => {
+          sound.unloadAsync();
+        }
+      : undefined;
+  }, [sound]);
+
+  const [sound, setSound] = useState();
+
   // Open link to privacy statement
   privacyHandler = async () => {
     await playSound();
@@ -71,6 +82,7 @@ const StartScreen = (props) => {
     const { sound } = await Audio.Sound.createAsync(
       require("../assets/sounds/menu.mp3")
     );
+    setSound(sound);
     await sound.playAsync();
   };
 
