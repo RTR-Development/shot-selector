@@ -62,9 +62,9 @@ const PlayScreen = (props) => {
   const [sound, setSound] = useState();
 
   const defaultImages = [
-    require("../assets/images/knoob.png"),
-    require("../assets/images/icon_shot.png"),
-    require("../assets/images/shot_selector_logo.png"),
+    require("../assets/images/beer_by_MattPalmer.jpg"),
+    require("../assets/images/bacardi_by_DumanPhotography.jpg"),
+    require("../assets/images/vodka_by_NathanPowers.jpg"),
   ];
 
   let wheelRef = React.createRef();
@@ -107,7 +107,7 @@ const PlayScreen = (props) => {
         setSelectedImageUri(element.imageUri);
         setSelectedImageInt(element.imageInt);
         setCount(count + 1);
-        if (context.savedWheel && Math.random() < 0.5) {
+        if (context.savedWheel && Math.random() < 0.25) {
           wheelRef.show();
         }
         break;
