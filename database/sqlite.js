@@ -53,7 +53,6 @@ export const defaultShots = async () => {
               "INSERT INTO shots (name, abv, occ, imageInt) VALUES (?, ?, ?, ?), (?, ?, ?, ?), (?, ?, ?, ?);",
               ["Bier", 5, 1, 0, "Bacardi", 38, 1, 1, "Vodka", 35, 1, 2],
               (_, result) => {
-                console.log("here3");
                 resolve();
               },
               (_, err) => {
