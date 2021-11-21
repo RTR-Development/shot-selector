@@ -4,8 +4,10 @@
     "description": "Shot Selector was created to help you randomly select a shot out of your beverage collection.",
     "slug": "shot-selector",
     "privacy": "public",
-    "sdkVersion": "38.0.0",
-    "platforms": ["ios", "android"],
+    "platforms": [
+      "ios",
+      "android"
+    ],
     "version": "5.3.0",
     "orientation": "portrait",
     "backgroundColor": "#f1c232",
@@ -19,7 +21,9 @@
     "updates": {
       "fallbackToCacheTimeout": 500
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "bundleIdentifier": "com.rtrdevelopment.shot-selector",
       "buildNumber": "5.3.0",
@@ -32,7 +36,11 @@
         "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#f1c232"
       },
-      "permissions": ["CAMERA", "WRITE_EXTERNAL_STORAGE", "VIBRATE"]
+      "permissions": [
+        "CAMERA",
+        "WRITE_EXTERNAL_STORAGE",
+        "VIBRATE"
+      ]
     }
   }
 }

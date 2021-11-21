@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 
 import * as Font from "expo-font";
-import { AppLoading } from "expo";
+import AppLoading from "expo-app-loading";
 import DrinksContext from "./context/drinks-context";
 
 import InputScreen from "./screens/InputScreen";
@@ -111,6 +111,7 @@ export default function App() {
       <AppLoading
         startAsync={fetchFonts}
         onFinish={() => setDataLoaded(true)}
+        onError={(err) => console.warn(err)}
       />
     );
   }
