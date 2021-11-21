@@ -79,11 +79,15 @@ const StartScreen = (props) => {
 
   // Play menu sound
   playSound = async () => {
-    const { sound } = await Audio.Sound.createAsync(
-      require("../assets/sounds/menu.mp3")
-    );
-    setSound(sound);
-    await sound.playAsync();
+    try {
+      const { sound } = await Audio.Sound.createAsync(
+        require("../assets/sounds/menu.mp3")
+      );
+      setSound(sound);
+      await sound.playAsync();
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   changeScreen = async (screen) => {

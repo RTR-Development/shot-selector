@@ -75,19 +75,17 @@ const InputScreen = (props) => {
   const [drinkABV, setDrinkABV] = useState();
   const [drinkOccurence, setDrinkOccurence] = useState(1);
   const [selectedImage, setSelectedImage] = useState();
+  const [show, setShow] = useState(false);
 
   const [sound, setSound] = useState();
 
   // Manage BottomPopup
   // onShowPopup makes BottomPopup visible on screen
   // onClosePopup makes BottomPopup invisible on screen
-  let popupRef = React.createRef();
-  const onShowPopup = async () => {
+  // let popupRef = React.createRef();
+  const showHandler = async (showModel) => {
     await playSound("menu");
-    popupRef.show();
-  };
-  const onClosePopup = () => {
-    popupRef.close();
+    setShow(showModel);
   };
 
   const imageTakenHandler = (imagePath) => {
@@ -176,7 +174,7 @@ const InputScreen = (props) => {
 
   // Change wheel status switch in SQLite database and Context database
   const handleSwitchWheel = async (context) => {
-    // await playSound("menu");
+    await playSound("menu");
     try {
       if (context.savedWheel == 1) {
         const dbResult = await updateWheel(0);
@@ -193,7 +191,7 @@ const InputScreen = (props) => {
 
   // Change wheel status switch in SQLite database and Context database
   const handleSwitchVibration = async (context) => {
-    // await playSound("menu");
+    await playSound("menu");
     try {
       if (context.savedVibration == 1) {
         const dbResult = await updateVibration(0);
@@ -208,21 +206,25 @@ const InputScreen = (props) => {
     }
   };
 
-  playSound = async (song) => {
-    if (song == "menu") {
-      const { sound } = await Audio.Sound.createAsync(
-        require("../assets/sounds/menu.mp3")
-      );
-      setSound(sound);
-      await sound.playAsync();
-    } else if (song == "break_glass") {
-      const { sound } = await Audio.Sound.createAsync(
-        require("../assets/sounds/break_glass.mp3")
-      );
-      setSound(sound);
-      await sound.playAsync();
-    } else {
-      console.log("Requested sound not found");
+  const playSound = async (song) => {
+    try {
+      if (song == "menu") {
+        const { sound } = await Audio.Sound.createAsync(
+          require("../assets/sounds/menu.mp3")
+        );
+        setSound(sound);
+        await sound.playAsync();
+      } else if (song == "break_glass") {
+        const { sound } = await Audio.Sound.createAsync(
+          require("../assets/sounds/break_glass.mp3")
+        );
+        setSound(sound);
+        await sound.playAsync();
+      } else {
+        console.log("Requested sound not found");
+      }
+    } catch (err) {
+      console.log(err);
     }
   };
 
@@ -299,7 +301,10 @@ const InputScreen = (props) => {
               </View>
             </View>
             <View style={{ paddingTop: 34 }}>
-              <TouchableOpacity onPress={onShowPopup} activeOpacity={0.7}>
+              <TouchableOpacity
+                onPress={() => showHandler(true)}
+                activeOpacity={0.7}
+              >
                 <Ionicons
                   name="ios-image"
                   size={Config.deviceWidth > 350 ? 60 : 55}
@@ -386,13 +391,16 @@ const InputScreen = (props) => {
               keyExtractor={(item) => item.id.toString()}
             />
           </View>
-          <BottomPopup
-            title="Select an image"
-            ref={(target) => (popupRef = target)}
-            onTouchOutside={onClosePopup}
-            data={popupList}
-            onImageTaken={imageTakenHandler}
-          />
+          {show && (
+            <View>
+              <BottomPopup
+                title="Select an image"
+                showSetter={showHandler}
+                data={popupList}
+                onImageTaken={imageTakenHandler}
+              />
+            </View>
+          )}
         </View>
       )}
     </DrinksContext.Consumer>

@@ -15,35 +15,12 @@ import * as Permissions from "expo-permissions";
 import { Ionicons } from "@expo/vector-icons";
 
 import COLORS from "../constants/colors";
+import Config from "./Config";
 
-const deviceHeight = Dimensions.get("window").height;
-
-class BottomPopup extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      show: false,
-    };
-  }
-
-  show = () => {
-    this.setState({ show: true });
-  };
-
-  close = () => {
-    this.setState({ show: false });
-  };
-
-  handleCancel = (value) => (event) => {
-    this.setState({ show: value });
-  };
-
-  // Ask for CAMERA and CAMERA_ROLL permissions
-  verifyPermissions = async () => {
-    const result = await Permissions.askAsync(
-      Permissions.CAMERA,
-      Permissions.CAMERA_ROLL
-    );
+const BottomPopup = (props) => {
+  // Ask for device permissions
+  const verifyPermissions = async () => {
+    const result = await Permissions.askAsync(Permissions.CAMERA);
     if (result.status !== "granted") {
       Alert.alert(
         "Insufficient permissions granted!",
@@ -56,8 +33,8 @@ class BottomPopup extends Component {
   };
 
   // Open camera and save taken picture
-  takeImageHandler = async () => {
-    const hasPermission = await this.verifyPermissions();
+  const takeImageHandler = async () => {
+    const hasPermission = await verifyPermissions();
     if (!hasPermission) {
       return;
     }
@@ -71,8 +48,8 @@ class BottomPopup extends Component {
   };
 
   // Open image gallery and save selected picture
-  useImageRoll = async () => {
-    const hasPermission = await this.verifyPermissions();
+  const useImageRoll = async () => {
+    const hasPermission = await verifyPermissions();
     if (!hasPermission) {
       return;
     }
@@ -85,17 +62,20 @@ class BottomPopup extends Component {
     this.setState({ show: false });
   };
 
-  renderOutsideTouchable(onTouch) {
+  const renderOutsideTouchable = (show, showSetter) => {
     const view = <View style={styles.outsideContainer} />;
-    if (!onTouch) return view;
+    if (!show) return view;
     return (
-      <TouchableWithoutFeedback onPress={onTouch} style={styles.container}>
+      <TouchableWithoutFeedback
+        onPress={showSetter(false)}
+        style={styles.container}
+      >
         {view}
       </TouchableWithoutFeedback>
     );
-  }
+  };
 
-  renderTitle = (title) => {
+  const renderTitle = (title) => {
     return (
       <View style={{ alignItems: "center" }}>
         <Text style={styles.titleText}>{title}</Text>
@@ -103,27 +83,27 @@ class BottomPopup extends Component {
     );
   };
 
-  renderContent = (data) => {
+  const renderContent = (data) => {
     return (
       <View>
         <FlatList
           showsVerticalScrollIndicator={false}
           data={data}
-          renderItem={this.renderItem}
+          renderItem={renderItem}
           extraData={data}
           keyExtractor={(item, index) => index.toString()}
-          ItemSeparatorComponent={this.renderSeparator}
+          ItemSeparatorComponent={renderSeparator}
           contentContainerStyle={{ paddingBottom: 40 }}
         />
       </View>
     );
   };
 
-  renderItem = ({ item }) => {
+  const renderItem = ({ item }) => {
     if (item.name === "Camera") {
       return (
         <View>
-          <TouchableOpacity onPress={this.takeImageHandler} activeOpacity={0.7}>
+          <TouchableOpacity onPress={takeImageHandler} activeOpacity={0.7}>
             <View style={styles.itemContainer}>
               <Text style={styles.itemText}>{item.name}</Text>
               <Ionicons
@@ -138,7 +118,7 @@ class BottomPopup extends Component {
     } else if (item.name === "Gallery") {
       return (
         <View>
-          <TouchableOpacity onPress={this.useImageRoll} activeOpacity={0.7}>
+          <TouchableOpacity onPress={useImageRoll} activeOpacity={0.7}>
             <View style={styles.itemContainer}>
               <Text style={styles.itemText}>{item.name}</Text>
               <Ionicons
@@ -154,7 +134,7 @@ class BottomPopup extends Component {
       return (
         <View>
           <TouchableOpacity
-            onPress={this.handleCancel(false)}
+            onPress={() => props.showSetter(false)}
             activeOpacity={0.7}
           >
             <View style={styles.itemContainer}>
@@ -166,31 +146,20 @@ class BottomPopup extends Component {
     }
   };
 
-  renderSeparator = () => <View style={styles.separator} />;
+  const renderSeparator = () => <View style={styles.separator} />;
 
-  render() {
-    let { show } = this.state;
-    const { onTouchOutside, title, data } = this.props;
-    return (
-      <Modal
-        animationType={"fade"}
-        transparent={true}
-        visible={show}
-        onRequestClose={this.close}
-      >
-        <View style={styles.container}>
-          {this.renderOutsideTouchable(onTouchOutside)}
-          <View style={styles.popupContainer}>
-            {this.renderTitle(title)}
-            {this.renderContent(data)}
-          </View>
+  return (
+    <Modal animationType={"fade"} transparent={true}>
+      <View style={styles.container}>
+        {renderOutsideTouchable(props.show, props.showSetter)}
+        <View style={styles.popupContainer}>
+          {renderTitle(props.title)}
+          {renderContent(props.data)}
         </View>
-      </Modal>
-    );
-  }
-}
-
-export default BottomPopup;
+      </View>
+    </Modal>
+  );
+};
 
 const styles = StyleSheet.create({
   outsideContainer: {
@@ -207,7 +176,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 10,
     borderTopLeftRadius: 10,
     paddingHorizontal: 10,
-    maxHeight: deviceHeight * 0.4,
+    maxHeight: Config.deviceHeight * 0.4,
   },
   separator: {
     opacity: 0.2,
@@ -234,3 +203,5 @@ const styles = StyleSheet.create({
     color: COLORS.secondaryColor,
   },
 });
+
+export default BottomPopup;
