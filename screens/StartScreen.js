@@ -29,7 +29,7 @@ const StartScreen = (props) => {
   const [sound, setSound] = useState();
 
   // Open link to privacy statement
-  privacyHandler = async () => {
+  const privacyHandler = async () => {
     await playSound();
     Alert.alert(
       "Privacy Statement",
@@ -52,7 +52,7 @@ const StartScreen = (props) => {
   };
 
   // Go to store page for user to like the app
-  likeHandler = async () => {
+  const likeHandler = async () => {
     await playSound();
     setTimeout(
       () =>
@@ -63,8 +63,8 @@ const StartScreen = (props) => {
     );
   };
 
-  // Ask for VIBRATION permission
-  verifyPermissions = async () => {
+  // Ask for vibration permission
+  const verifyPermissions = async () => {
     const result = await Permissions.askAsync(Permissions.MOTION);
     if (result.status !== "granted") {
       Alert.alert(
@@ -77,8 +77,7 @@ const StartScreen = (props) => {
     return true;
   };
 
-  // Play menu sound
-  playSound = async () => {
+  const playSound = async () => {
     try {
       const { sound } = await Audio.Sound.createAsync(
         require("../assets/sounds/menu.mp3")
@@ -90,16 +89,14 @@ const StartScreen = (props) => {
     }
   };
 
-  changeScreen = async (screen) => {
+  const changeScreen = async (screen) => {
     await playSound();
-    // Check for permission
     if (screen == "PlayScreen") {
       const hasPermission = await verifyPermissions();
       if (!hasPermission) {
         return;
       }
     }
-    // Change screen
     props.onChangeScreen(screen);
   };
 

@@ -307,7 +307,7 @@ const InputScreen = (props) => {
               >
                 <Ionicons
                   name="ios-image"
-                  size={Config.deviceWidth > 350 ? 60 : 55}
+                  size={Config.deviceWidth > 350 ? 58 : 52}
                   color="white"
                   style={styles.ionicon}
                 />
